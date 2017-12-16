@@ -503,7 +503,8 @@
   
     <div class="comments" id="comments">
       
-        <div id="gitment-container"></div>
+        <div onclick="showGitment()" id="gitment-display-button">Show comments from Gitment</div>
+        <div id="gitment-container" style="display:none"></div>
       
     </div>
 
@@ -586,6 +587,18 @@
                   <a href="mailto:ME@GUOWEI.PUB" target="_blank" title="E-Mail">
                     
                       <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://stackoverflow.com/users/6453643/neil-kwok" target="_blank" title="StackOverflow">
+                    
+                      <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.linkedin.com/in/%E4%BC%9F-%E9%83%AD-6a8b246b/" target="_blank" title="LinkedIn">
+                    
+                      <i class="fa fa-fw fa-linkedin-square"></i>LinkedIn</a>
                 </span>
               
             
@@ -865,7 +878,11 @@
       }
 
       
-      renderGitment();
+      function showGitment(){
+        document.getElementById("gitment-display-button").style.display = "none";
+        document.getElementById("gitment-container").style.display = "block";
+        renderGitment();
+      }
       
       </script>
     

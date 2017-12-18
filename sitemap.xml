@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.guowei.pub/2017/12/18/Readme/</loc>
+    
+    <lastmod>2017-12-18T13:42:41.919Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.guowei.pub/tags/index.html</loc>
     
     <lastmod>2017-12-16T02:44:51.072Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://www.guowei.pub/404.html</loc>
     
     <lastmod>2017-12-15T23:34:56.624Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.guowei.pub/2017/12/14/hello-world/</loc>
-    
-    <lastmod>2017-12-14T14:47:34.456Z</lastmod>
     
   </url>
   

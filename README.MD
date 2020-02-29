@@ -1,2 +1,2 @@
-# GWBLOG
-www.guowei.pub
+# aiData
+www.aiData.ink

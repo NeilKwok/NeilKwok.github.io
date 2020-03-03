@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.aidata.ink/404.html</loc>
+    
+    <lastmod>2020-03-03T02:16:48.129Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.aidata.ink/Resume/index.html</loc>
     
     <lastmod>2020-03-03T01:51:10.715Z</lastmod>
@@ -61,13 +68,6 @@
     <loc>http://www.aidata.ink/tags/index.html</loc>
     
     <lastmod>2020-03-01T07:33:05.080Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.aidata.ink/404.html</loc>
-    
-    <lastmod>2020-02-28T03:36:24.671Z</lastmod>
     
   </url>
   

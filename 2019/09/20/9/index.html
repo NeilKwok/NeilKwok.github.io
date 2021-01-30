@@ -100,14 +100,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="http://www.aidata.ink/tags/index.html">
+<meta name="description" content="在选择加密算法，面对一大长串的选项时，大家都有这样的疑问，究竟哪种加密方式是最好的呢？ 对于加密方式、算法来说，一般安全性与性能呈负相关，越是安全的，对性能要求则更高。 现在主流的加密协议的安全性均能达到标准，因此这里主要讨论的最好便是加密性能的优良。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常见对称加密算法特性分析">
+<meta property="og:url" content="http://www.aidata.ink/2019/09/20/9/index.html">
 <meta property="og:site_name" content="aiData">
+<meta property="og:description" content="在选择加密算法，面对一大长串的选项时，大家都有这样的疑问，究竟哪种加密方式是最好的呢？ 对于加密方式、算法来说，一般安全性与性能呈负相关，越是安全的，对性能要求则更高。 现在主流的加密协议的安全性均能达到标准，因此这里主要讨论的最好便是加密性能的优良。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-01T07:33:05.080Z">
+<meta property="og:updated_time" content="2021-01-30T14:50:39.420Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
+<meta name="twitter:title" content="常见对称加密算法特性分析">
+<meta name="twitter:description" content="在选择加密算法，面对一大长串的选项时，大家都有这样的疑问，究竟哪种加密方式是最好的呢？ 对于加密方式、算法来说，一般安全性与性能呈负相关，越是安全的，对性能要求则更高。 现在主流的加密协议的安全性均能达到标准，因此这里主要讨论的最好便是加密性能的优良。">
 
 
 
@@ -140,14 +143,14 @@
 
 
 
-  <link rel="canonical" href="http://www.aidata.ink/tags/">
+  <link rel="canonical" href="http://www.aidata.ink/2019/09/20/9/">
 
 
 
 
 
 
-  <title>tags | aiData</title>
+  <title>常见对称加密算法特性分析 | aiData</title>
   
 
 
@@ -303,40 +306,345 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.aidata.ink/2019/09/20/9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Neil">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatarfull.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aiData">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h2 class="post-title" itemprop="name headline">tags</h2>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                5 tags in total
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Excel/" style="font-size: 12px; color: #ccc">Excel</a> <a href="/tags/Markdown/" style="font-size: 30px; color: #111">Markdown</a> <a href="/tags/SQL/" style="font-size: 12px; color: #ccc">SQL</a> <a href="/tags/建站/" style="font-size: 12px; color: #ccc">建站</a> <a href="/tags/数据呈现/" style="font-size: 12px; color: #ccc">数据呈现</a>
-            </div>
-          </div>
+          <h2 class="post-title" itemprop="name headline">常见对称加密算法特性分析</h2>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-20T20:38:32+08:00">
+                2019-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
       
+        <p>在选择加密算法，面对一大长串的选项时，大家都有这样的疑问，究竟哪种加密方式是最好的呢？</p>
+<p>对于加密方式、算法来说，一般安全性与性能呈负相关，越是安全的，对性能要求则更高。</p>
+<p>现在主流的加密协议的安全性均能达到标准，因此这里主要讨论的最好便是加密性能的优良。</p>
+<a id="more"></a>
+
+<p>对于 OpenSSL 而言，有三种常见的加密方式：RC4、AES、ChaCha。</p>
+<p>单看这三种加密方式，都是非常具有代表性，可以说每种都有优缺点。</p>
+<h2 id="AEAD"><a href="#AEAD" class="headerlink" title="AEAD"></a>AEAD</h2><p>在传统的对称加密协议中，最大的缺陷就是没有对数据包完整性进行校验，再加上流加密的特点，导致了攻击者可以通过穷举的方式修改密文进行基于服务器行为的主动探测。</p>
+<p>在通常的密码学应用中，Confidentiality（保密）用加密实现，消息认证用 MAC（Message Authentication Code，消息验证码）实现。这两种算法的配合方式，引发了很多安全漏洞，过去曾经有 3 种方法：</p>
+<blockquote>
+<ol>
+<li>Encrypt-and-MAC (E&amp;M)</li>
+<li>MAC-then-Encrypt (MtE) &lt;- 即 OTA 的做法</li>
+<li>Encrypt-then-MAC (EtM) &lt;- 新协议的做法</li>
+</ol>
+</blockquote>
+<p>然而后来人们发现，E&amp;M 和 MtE 都是有安全问题的，所以 2008 年起， 逐渐提出了「用一个算法在内部同时实现加密和认证」的方法，称为 AEAD (Authenticated Encryption with Associated Data)。在 AEAD 这种概念里，cipher + MAC 的模式被一个 AEAD 算法替换。</p>
+<p>使用了 AEAD 算法的新协议本质上就是更完善的 stream cipher + authentication，虽然它依然使用的是流加密（StreamCipher），但是通过更完善的数据包完整性验证机制杜绝了上面所述的可被篡改密文的可能性。</p>
+<p>目前以下加密方式支持 AEAD 算法：</p>
+<blockquote>
+<ol>
+<li>AES-128-GCM</li>
+<li>AES-192-GCM</li>
+<li>AES-256-GCM</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+</ol>
+</blockquote>
+<p>但如果是用在路由器上，因为很多路由器 CPU 速度都在 500MHz 以下，并且不支持 AES 硬解，因为在路由器等计算能力弱的设备上使用 AES 加密方式会造成性能影响，所以，之前使用在路由器上的加密方式一般都选 ChaCha20 算法或 RC4-MD5 （特别是 MIPS 架构的处理器）。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>支持 AES 指令集情况下：</p>
+<blockquote>
+<ul>
+<li><code>更快（Fast）</code></li>
+</ul>
+<ol>
+<li>RC4-MD5</li>
+<li>AES-256-CFB</li>
+<li>AES-256-GCM</li>
+<li>ChaCha20</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+</ol>
+<ul>
+<li><code>更慢（Slow）</code></li>
+</ul>
+</blockquote>
+<p>不支持 AES 指令集情况下：</p>
+<blockquote>
+<ul>
+<li>更快（Fast）</li>
+</ul>
+<ol>
+<li>RC4-MD5</li>
+<li>ChaCha20</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+<li>AES-256-CFB</li>
+<li>AES-256-GCM</li>
+</ol>
+<ul>
+<li>更慢（Slow）</li>
+</ul>
+</blockquote>
+<p>在各类处理器的测试数据：</p>
+<table>
+<thead>
+<tr>
+<th>Chip</th>
+<th>AES-128-GCM 速度</th>
+<th>ChaCha20-Poly1305 速度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OMAP 4460</td>
+<td>24.1 MB/s</td>
+<td>75.3 MB/s</td>
+</tr>
+<tr>
+<td>Snapdragon S4 Pro</td>
+<td>41.5 MB/s</td>
+<td>130.9 MB/s</td>
+</tr>
+<tr>
+<td>Sandy Bridge Xeon (AES-NI)</td>
+<td>900 MB/s</td>
+<td>500 MB/s</td>
+</tr>
+</tbody></table>
+<h2 id="RC4-加密"><a href="#RC4-加密" class="headerlink" title="RC4 加密"></a>RC4 加密</h2><p>速度最快，加密简单易破解，适合内网、低性能设备，推荐使用 RC4-MD5。</p>
+<blockquote>
+<p>RC4-MD5：使用 RC4 加密 MD5 校验。</p>
+</blockquote>
+<h2 id="AES-加密"><a href="#AES-加密" class="headerlink" title="AES 加密"></a>AES 加密</h2><p>块加密算法，兼顾效率和安全，适合在拥有 AES 指令集的 CPU 上，推荐使用 AES-256-GCM 。</p>
+<table>
+<thead>
+<tr>
+<th>区别</th>
+<th>AES-XXX-CFB</th>
+<th>AES-XXX-CTR</th>
+<th>AES-XXX-GCM</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>区别</td>
+<td>仅加密</td>
+<td>仅加密</td>
+<td>加密+消息完整性校验</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>加密可并行</td>
+<td>加密解密均可并行计算</td>
+<td>加密解密均可并行计算</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>解密串行</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>&gt; AES-256-CFB：密码反馈模式（Cipher FeedBack Mode），仅加密无完整性校验。</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>AES-256-CTR：计算器模式（Counter Mode），仅加密无完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>AES-256-GCM：伽罗瓦 / 计数器模式（Galois / Counter Mode）支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<h2 id="ChaCha-加密"><a href="#ChaCha-加密" class="headerlink" title="ChaCha 加密"></a>ChaCha 加密</h2><p>新型的流加密算法，兼顾效率和安全，适合在没有 AES 指令集的 CPU 上，效率比 AES 高，推荐使用 XChaCha20-IETF-Poly1305 。</p>
+<blockquote>
+<p>ChaCha20：Salsa20 算法的改良，仅加密无完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>ChaCha20-IETF-Poly1305：支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>XChaCha20-IETF-Poly1305：是前者的升级版，拥有更大的随机数以防碰撞攻击，支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在具备 AES 加速的 CPU（例如桌面、服务器）上，建议使用 AES-256-GCM 系列。</p>
+<p>在移动设备（例如手机、路由器等非 x86 架构的 CPU）上则建议使用 ChaCha20-IETF-Poly1305 系列。</p>
+<p>如果你是在内网（LAN 或 IPLC 线路）使用，则不必过多担心安全性问题，RC4-MD5 加密协议将是非常节省性能的选择。</p>
+
+      
+	  
+	  
     </div>
     
     
     
+
+	
+	
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Neil WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Neil Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Neil
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://www.aidata.ink/2019/09/20/9/" title="常见对称加密算法特性分析">http://www.aidata.ink/2019/09/20/9/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/10/8/" rel="next" title="IDC机房建设标准">
+                <i class="fa fa-chevron-left"></i> IDC机房建设标准
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/02/10/" rel="prev" title="常用系统性能估算方法">
+                常用系统性能估算方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+	  
+	  
+	  
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_inline_share_toolbox">
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a34efd49d17c3d9" async="async"></script>
+</div>
+
+      
+    </div>
   </div>
 
 
@@ -345,6 +653,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -365,8 +677,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -462,6 +783,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AEAD"><span class="nav-number">1.</span> <span class="nav-text">AEAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能"><span class="nav-number">2.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RC4-加密"><span class="nav-number">3.</span> <span class="nav-text">RC4 加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AES-加密"><span class="nav-number">4.</span> <span class="nav-text">AES 加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChaCha-加密"><span class="nav-number">5.</span> <span class="nav-text">ChaCha 加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>

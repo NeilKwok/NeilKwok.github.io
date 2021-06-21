@@ -1,2 +1,0 @@
-# aiData
-www.aiData.ink

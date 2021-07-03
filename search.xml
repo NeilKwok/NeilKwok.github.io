@@ -275,6 +275,285 @@
       </tags>
   </entry>
   <entry>
+    <title>在Hexo中嵌入动态图表Echarts和Google Charts</title>
+    <url>/2019/03/01/3/</url>
+    <content><![CDATA[<p>最近学习了<code>PowerBI</code>和<code>Tableau</code>，但是这两个平台如果没有购买服务就无法在网页上显示出来，更别说嵌入到自己网站中。网页端的动态图表有很多，最近研究了一下<code>Echarts</code>和<code>Google Charts</code>，最终将动态图表搬到了博客中：</p>
+<span id="more"></span>
+
+<div id="chart0" style="width: 85%;height: 400px;margin: 0 auto"></div>
+
+
+	
+		<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<script type="text/javascript">
+  var myChart = echarts.init(document.getElementById('chart0'));
+  option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 10,
+        data: ['直达', '营销广告', '搜索引擎', '邮件营销', '联盟广告', '视频广告', '百度', '谷歌', '必应', '其他']
+    },
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+            selectedMode: 'single',
+            radius: [0, '30%'],
+
+            label: {
+                position: 'inner'
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                {value: 335, name: '直达', selected: true},
+                {value: 679, name: '营销广告'},
+                {value: 1548, name: '搜索引擎'}
+            ]
+        },
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['40%', '55%'],
+            label: {
+                formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                backgroundColor: '#eee',
+                borderColor: '#aaa',
+                borderWidth: 1,
+                borderRadius: 4,
+                // shadowBlur:3,
+                // shadowOffsetX: 2,
+                // shadowOffsetY: 2,
+                // shadowColor: '#999',
+                // padding: [0, 7],
+                rich: {
+                    a: {
+                        color: '#999',
+                        lineHeight: 22,
+                        align: 'center'
+                    },
+                    // abg: {
+                    //     backgroundColor: '#333',
+                    //     width: '100%',
+                    //     align: 'right',
+                    //     height: 22,
+                    //     borderRadius: [4, 4, 0, 0]
+                    // },
+                    hr: {
+                        borderColor: '#aaa',
+                        width: '100%',
+                        borderWidth: 0.5,
+                        height: 0
+                    },
+                    b: {
+                        fontSize: 16,
+                        lineHeight: 33
+                    },
+                    per: {
+                        color: '#eee',
+                        backgroundColor: '#334455',
+                        padding: [2, 4],
+                        borderRadius: 2
+                    }
+                }
+            },
+            data: [
+                {value: 335, name: '直达'},
+                {value: 310, name: '邮件营销'},
+                {value: 234, name: '联盟广告'},
+                {value: 135, name: '视频广告'},
+                {value: 1048, name: '百度'},
+                {value: 251, name: '谷歌'},
+                {value: 147, name: '必应'},
+                {value: 102, name: '其他'}
+            ]
+        }
+    ]
+};
+        myChart.setOption(option);
+</script>
+        
+        
+
+
+
+
+<p>当然，这主要是在Hexo上实现的。</p>
+<h3 id="安装并修改插件"><a href="#安装并修改插件" class="headerlink" title="安装并修改插件"></a>安装并修改插件</h3><p>首先安装Echart标签插件，从而实现Echarts的插入。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-tag-echarts3 --save</span><br></pre></td></tr></table></figure>
+
+<p>打开<code>hexo-tag-echarts3</code>插件Readme.md文件，可以看到用法：将Echarts的Option写在Tag中间。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;% echarts <span class="number">400</span> <span class="string">&#x27;85%&#x27;</span> %&#125;</span><br><span class="line">\\TODO echarts option goes here</span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后可以到<a href="https://www.echartsjs.com/examples/zh/index.html">Echarts官网实例库</a>，选择相应的图例，点开就可以看到相应的代码了，复制option后面的内容，粘贴在Tag标签内，然后数据修改成自己的，就可以将相应的图表嵌入到网页中了。</p>
+<p>但是这样做有一个缺点，官方库中有些图例代码中将数据放在option外，那么就无法正常显示了。因此需要对模块进行修改。</p>
+<p>打开模块的<code>template.html</code>文件，全部删除后替换成以下代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;&lt;%- id %&gt;&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: &lt;%- width %&gt;;height: &lt;%- height %&gt;px;margin: 0 auto&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&lt;%= option %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后打开<code>index.js</code>文件，将return _.template(template)后修改成下面：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> _.template(template)(&#123;</span><br><span class="line">    <span class="attr">id</span>: args[<span class="number">0</span>] || chart,</span><br><span class="line">    <span class="attr">option</span>: options,</span><br><span class="line">    <span class="attr">height</span>: args[<span class="number">1</span>] || <span class="number">400</span>,</span><br><span class="line">    <span class="attr">width</span>: args[<span class="number">2</span>] || <span class="string">&#x27;85%&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这样就修改好了，标签有三个参数，第一个参数是表格ID，第二个参数是DOM容器的高度，第三个参数是DOM容器的宽度。修改后自定义的程度就高多了，可以同时支持Echarts和Google Charts图表的插入。</p>
+<h3 id="Echarts图表插入样例"><a href="#Echarts图表插入样例" class="headerlink" title="Echarts图表插入样例"></a>Echarts图表插入样例</h3><p><a href="https://www.echartsjs.com/examples/zh/index.html">更多图例参考官网实例库</a></p>
+<p>效果：</p>
+<div id="chart2" style="width: 85%;height: 400px;margin: 0 auto"></div>
+
+
+	
+		
+<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('chart2'));
+		var xAxisData = [];
+		var data1 = [];
+		var data2 = [];
+        for (var i = 0; i < 100; i++) {
+            xAxisData.push('Object' + i);
+            data1.push((Math.sin(i / 5) * (i / 5 -10) + i / 6) * 5);
+            data2.push((Math.cos(i / 5) * (i / 5 -10) + i / 6) * 5);
+        }
+
+        option = {
+            title: {
+                text: ' '
+            },
+            legend: {
+                data: ['bar', 'bar2']
+            },
+            toolbox: {
+                // y: 'bottom',
+                feature: {
+                    magicType: {
+                        type: ['stack', 'tiled']
+                    },
+                    dataView: {},
+                    saveAsImage: {
+                        pixelRatio: 2
+                    }
+                }
+            },
+            tooltip: {},
+            xAxis: {
+                data: xAxisData,
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+            },
+            series: [{
+                name: 'bar',
+                type: 'bar',
+                data: data1,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            }, {
+                name: 'bar2',
+                type: 'bar',
+                data: data2,
+                animationDelay: function (idx) {
+                    return idx * 10 + 100;
+                }
+            }],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) {
+                return idx * 5;
+            }
+        };
+        myChart.setOption(option);
+</script>
+        
+        
+
+
+
+<p>代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;% echarts chart2 <span class="number">400</span> <span class="string">&#x27;85%&#x27;</span> %&#125;</span><br><span class="line">&lt;script src=<span class="string">&quot;https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">var</span> myChart = echarts.init(<span class="built_in">document</span>.getElementById(<span class="string">&#x27;chart2&#x27;</span>));</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> xAxisData = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> data1 = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> data2 = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            xAxisData.push(<span class="string">&#x27;Object&#x27;</span> + i);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            data1.push((<span class="built_in">Math</span>.sin(i / <span class="number">5</span>) * (i / <span class="number">5</span> -<span class="number">10</span>) + i / <span class="number">6</span>) * <span class="number">5</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            data2.push((<span class="built_in">Math</span>.cos(i / <span class="number">5</span>) * (i / <span class="number">5</span> -<span class="number">10</span>) + i / <span class="number">6</span>) * <span class="number">5</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        option = &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">title</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">text</span>: <span class="string">&#x27; &#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">legend</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: [<span class="string">&#x27;bar&#x27;</span>, <span class="string">&#x27;bar2&#x27;</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">toolbox</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="comment">// y: &#x27;bottom&#x27;,</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">feature</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">magicType</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                        <span class="attr">type</span>: [<span class="string">&#x27;stack&#x27;</span>, <span class="string">&#x27;tiled&#x27;</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">dataView</span>: &#123;&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">saveAsImage</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                        <span class="attr">pixelRatio</span>: <span class="number">2</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">tooltip</span>: &#123;&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">xAxis</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: xAxisData,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">splitLine</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">show</span>: <span class="literal">false</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">yAxis</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">series</span>: [&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">name</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">type</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: data1,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">animationDelay</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="keyword">return</span> idx * <span class="number">10</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;, &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">name</span>: <span class="string">&#x27;bar2&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">type</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: data2,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">animationDelay</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="keyword">return</span> idx * <span class="number">10</span> + <span class="number">100</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;],</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">animationEasing</span>: <span class="string">&#x27;elasticOut&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">animationDelayUpdate</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="keyword">return</span> idx * <span class="number">5</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        myChart.setOption(option);</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，标签内的第一个参数和表格ID要对应一致。</p>
+<h3 id="Google-Charts图表插入样例"><a href="#Google-Charts图表插入样例" class="headerlink" title="Google Charts图表插入样例"></a>Google Charts图表插入样例</h3><p><a href="https://developers.google.com/chart/interactive/docs">更多图例参考官网实例库</a></p>
+<p>效果：</p>
+<div id="chart1" style="width: 85%;height: 400px;margin: 0 auto"></div>
+
+
+	
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['gantt']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+    
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('string', 'Resource');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+    
+      data.addRows([
+        ['2014Spring', 'Spring 2014', 'spring',
+         new Date(2014, 2, 22), new Date(2014, 5, 20), null, 100, null],
+        ['2014Summer', 'Summer 2014', 'summer',
+         new Date(2014, 5, 21), new Date(2014, 8, 20), null, 100, null],
+        ['2014Autumn', 'Autumn 2014', 'autumn',
+         new Date(2014, 8, 21), new Date(2014, 11, 20), null, 100, null],
+        ['2014Winter', 'Winter 2014', 'winter',
+         new Date(2014, 11, 21), new Date(2015, 2, 21), null, 100, null],
+        ['2015Spring', 'Spring 2015', 'spring',
+         new Date(2015, 2, 22), new Date(2015, 5, 20), null, 50, null],
+        ['2015Summer', 'Summer 2015', 'summer',
+         new Date(2015, 5, 21), new Date(2015, 8, 20), null, 0, null],
+        ['2015Autumn', 'Autumn 2015', 'autumn',
+         new Date(2015, 8, 21), new Date(2015, 11, 20), null, 0, null],
+        ['2015Winter', 'Winter 2015', 'winter',
+         new Date(2015, 11, 21), new Date(2016, 2, 21), null, 0, null],
+        ['Football', 'Football Season', 'sports',
+         new Date(2014, 8, 4), new Date(2015, 1, 1), null, 100, null],
+        ['Baseball', 'Baseball Season', 'sports',
+         new Date(2015, 2, 31), new Date(2015, 9, 20), null, 14, null],
+        ['Basketball', 'Basketball Season', 'sports',
+         new Date(2014, 9, 28), new Date(2015, 5, 20), null, 86, null],
+        ['Hockey', 'Hockey Season', 'sports',
+         new Date(2014, 9, 8), new Date(2015, 5, 21), null, 89, null]
+      ]);
+    
+      var options = {
+        height: 400,
+        gantt: {
+          trackHeight: 30
+        }
+      };
+    
+      var chart = new 										    					  
+      google.visualization.Gantt(document.getElementById('chart1'));
+      chart.draw(data, options);
+    }
+</script>
+        
+        
+
+
+<p>代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% echarts chart1 400 &#x27;85%&#x27; %&#125;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;https://www.gstatic.com/charts/loader.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    google.charts.load(&#x27;current&#x27;, &#123;&#x27;packages&#x27;:[&#x27;gantt&#x27;]&#125;);</span><br><span class="line">    google.charts.setOnLoadCallback(drawChart);</span><br><span class="line"></span><br><span class="line">    function drawChart() &#123;</span><br><span class="line"></span><br><span class="line">      var data = new google.visualization.DataTable();</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Task ID&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Task Name&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Resource&#x27;);</span><br><span class="line">      data.addColumn(&#x27;date&#x27;, &#x27;Start Date&#x27;);</span><br><span class="line">      data.addColumn(&#x27;date&#x27;, &#x27;End Date&#x27;);</span><br><span class="line">      data.addColumn(&#x27;number&#x27;, &#x27;Duration&#x27;);</span><br><span class="line">      data.addColumn(&#x27;number&#x27;, &#x27;Percent Complete&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Dependencies&#x27;);</span><br><span class="line"></span><br><span class="line">      data.addRows([</span><br><span class="line">        [&#x27;2014Spring&#x27;, &#x27;Spring 2014&#x27;, &#x27;spring&#x27;,</span><br><span class="line">         new Date(2014, 2, 22), new Date(2014, 5, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Summer&#x27;, &#x27;Summer 2014&#x27;, &#x27;summer&#x27;,</span><br><span class="line">         new Date(2014, 5, 21), new Date(2014, 8, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Autumn&#x27;, &#x27;Autumn 2014&#x27;, &#x27;autumn&#x27;,</span><br><span class="line">         new Date(2014, 8, 21), new Date(2014, 11, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Winter&#x27;, &#x27;Winter 2014&#x27;, &#x27;winter&#x27;,</span><br><span class="line">         new Date(2014, 11, 21), new Date(2015, 2, 21), null, 100, null],</span><br><span class="line">        [&#x27;2015Spring&#x27;, &#x27;Spring 2015&#x27;, &#x27;spring&#x27;,</span><br><span class="line">         new Date(2015, 2, 22), new Date(2015, 5, 20), null, 50, null],</span><br><span class="line">        [&#x27;2015Summer&#x27;, &#x27;Summer 2015&#x27;, &#x27;summer&#x27;,</span><br><span class="line">         new Date(2015, 5, 21), new Date(2015, 8, 20), null, 0, null],</span><br><span class="line">        [&#x27;2015Autumn&#x27;, &#x27;Autumn 2015&#x27;, &#x27;autumn&#x27;,</span><br><span class="line">         new Date(2015, 8, 21), new Date(2015, 11, 20), null, 0, null],</span><br><span class="line">        [&#x27;2015Winter&#x27;, &#x27;Winter 2015&#x27;, &#x27;winter&#x27;,</span><br><span class="line">         new Date(2015, 11, 21), new Date(2016, 2, 21), null, 0, null],</span><br><span class="line">        [&#x27;Football&#x27;, &#x27;Football Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 8, 4), new Date(2015, 1, 1), null, 100, null],</span><br><span class="line">        [&#x27;Baseball&#x27;, &#x27;Baseball Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2015, 2, 31), new Date(2015, 9, 20), null, 14, null],</span><br><span class="line">        [&#x27;Basketball&#x27;, &#x27;Basketball Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 9, 28), new Date(2015, 5, 20), null, 86, null],</span><br><span class="line">        [&#x27;Hockey&#x27;, &#x27;Hockey Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 9, 8), new Date(2015, 5, 21), null, 89, null]</span><br><span class="line">      ]);</span><br><span class="line"></span><br><span class="line">      var options = &#123;</span><br><span class="line">        height: 400,</span><br><span class="line">        gantt: &#123;</span><br><span class="line">          trackHeight: 30</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      var chart = new 										    					  </span><br><span class="line">      google.visualization.Gantt(document.getElementById(&#x27;chart1&#x27;));</span><br><span class="line">      chart.draw(data, options);</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>数据呈现</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Excel笔记</title>
     <url>/2019/03/28/4/</url>
     <content><![CDATA[<p>尽管<code>Python</code>在数据分析领域的应用越来越广泛，但是<code>Excel</code>作为基础的数据分析工具由于各种便利性还是无法替代。尤其在数据清洗过程中，Excel的效率非常高。即使在日常生活中，也是一大效率神器。</p>
@@ -616,285 +895,6 @@
       </tags>
   </entry>
   <entry>
-    <title>在Hexo中嵌入动态图表Echarts和Google Charts</title>
-    <url>/2019/03/01/3/</url>
-    <content><![CDATA[<p>最近学习了<code>PowerBI</code>和<code>Tableau</code>，但是这两个平台如果没有购买服务就无法在网页上显示出来，更别说嵌入到自己网站中。网页端的动态图表有很多，最近研究了一下<code>Echarts</code>和<code>Google Charts</code>，最终将动态图表搬到了博客中：</p>
-<span id="more"></span>
-
-<div id="chart0" style="width: 85%;height: 400px;margin: 0 auto"></div>
-
-
-	
-		<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
-<script type="text/javascript">
-  var myChart = echarts.init(document.getElementById('chart0'));
-  option = {
-    tooltip: {
-        trigger: 'item',
-        formatter: '{a} <br/>{b}: {c} ({d}%)'
-    },
-    legend: {
-        orient: 'vertical',
-        left: 10,
-        data: ['直达', '营销广告', '搜索引擎', '邮件营销', '联盟广告', '视频广告', '百度', '谷歌', '必应', '其他']
-    },
-    series: [
-        {
-            name: '访问来源',
-            type: 'pie',
-            selectedMode: 'single',
-            radius: [0, '30%'],
-
-            label: {
-                position: 'inner'
-            },
-            labelLine: {
-                show: false
-            },
-            data: [
-                {value: 335, name: '直达', selected: true},
-                {value: 679, name: '营销广告'},
-                {value: 1548, name: '搜索引擎'}
-            ]
-        },
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius: ['40%', '55%'],
-            label: {
-                formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
-                backgroundColor: '#eee',
-                borderColor: '#aaa',
-                borderWidth: 1,
-                borderRadius: 4,
-                // shadowBlur:3,
-                // shadowOffsetX: 2,
-                // shadowOffsetY: 2,
-                // shadowColor: '#999',
-                // padding: [0, 7],
-                rich: {
-                    a: {
-                        color: '#999',
-                        lineHeight: 22,
-                        align: 'center'
-                    },
-                    // abg: {
-                    //     backgroundColor: '#333',
-                    //     width: '100%',
-                    //     align: 'right',
-                    //     height: 22,
-                    //     borderRadius: [4, 4, 0, 0]
-                    // },
-                    hr: {
-                        borderColor: '#aaa',
-                        width: '100%',
-                        borderWidth: 0.5,
-                        height: 0
-                    },
-                    b: {
-                        fontSize: 16,
-                        lineHeight: 33
-                    },
-                    per: {
-                        color: '#eee',
-                        backgroundColor: '#334455',
-                        padding: [2, 4],
-                        borderRadius: 2
-                    }
-                }
-            },
-            data: [
-                {value: 335, name: '直达'},
-                {value: 310, name: '邮件营销'},
-                {value: 234, name: '联盟广告'},
-                {value: 135, name: '视频广告'},
-                {value: 1048, name: '百度'},
-                {value: 251, name: '谷歌'},
-                {value: 147, name: '必应'},
-                {value: 102, name: '其他'}
-            ]
-        }
-    ]
-};
-        myChart.setOption(option);
-</script>
-        
-        
-
-
-
-
-<p>当然，这主要是在Hexo上实现的。</p>
-<h3 id="安装并修改插件"><a href="#安装并修改插件" class="headerlink" title="安装并修改插件"></a>安装并修改插件</h3><p>首先安装Echart标签插件，从而实现Echarts的插入。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-tag-echarts3 --save</span><br></pre></td></tr></table></figure>
-
-<p>打开<code>hexo-tag-echarts3</code>插件Readme.md文件，可以看到用法：将Echarts的Option写在Tag中间。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;% echarts <span class="number">400</span> <span class="string">&#x27;85%&#x27;</span> %&#125;</span><br><span class="line">\\TODO echarts option goes here</span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后可以到<a href="https://www.echartsjs.com/examples/zh/index.html">Echarts官网实例库</a>，选择相应的图例，点开就可以看到相应的代码了，复制option后面的内容，粘贴在Tag标签内，然后数据修改成自己的，就可以将相应的图表嵌入到网页中了。</p>
-<p>但是这样做有一个缺点，官方库中有些图例代码中将数据放在option外，那么就无法正常显示了。因此需要对模块进行修改。</p>
-<p>打开模块的<code>template.html</code>文件，全部删除后替换成以下代码：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;&lt;%- id %&gt;&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: &lt;%- width %&gt;;height: &lt;%- height %&gt;px;margin: 0 auto&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&lt;%= option %&gt;</span><br></pre></td></tr></table></figure>
-
-<p>然后打开<code>index.js</code>文件，将return _.template(template)后修改成下面：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> _.template(template)(&#123;</span><br><span class="line">    <span class="attr">id</span>: args[<span class="number">0</span>] || chart,</span><br><span class="line">    <span class="attr">option</span>: options,</span><br><span class="line">    <span class="attr">height</span>: args[<span class="number">1</span>] || <span class="number">400</span>,</span><br><span class="line">    <span class="attr">width</span>: args[<span class="number">2</span>] || <span class="string">&#x27;85%&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>这样就修改好了，标签有三个参数，第一个参数是表格ID，第二个参数是DOM容器的高度，第三个参数是DOM容器的宽度。修改后自定义的程度就高多了，可以同时支持Echarts和Google Charts图表的插入。</p>
-<h3 id="Echarts图表插入样例"><a href="#Echarts图表插入样例" class="headerlink" title="Echarts图表插入样例"></a>Echarts图表插入样例</h3><p><a href="https://www.echartsjs.com/examples/zh/index.html">更多图例参考官网实例库</a></p>
-<p>效果：</p>
-<div id="chart2" style="width: 85%;height: 400px;margin: 0 auto"></div>
-
-
-	
-		
-<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
-<script type="text/javascript">
-        var myChart = echarts.init(document.getElementById('chart2'));
-		var xAxisData = [];
-		var data1 = [];
-		var data2 = [];
-        for (var i = 0; i < 100; i++) {
-            xAxisData.push('Object' + i);
-            data1.push((Math.sin(i / 5) * (i / 5 -10) + i / 6) * 5);
-            data2.push((Math.cos(i / 5) * (i / 5 -10) + i / 6) * 5);
-        }
-
-        option = {
-            title: {
-                text: ' '
-            },
-            legend: {
-                data: ['bar', 'bar2']
-            },
-            toolbox: {
-                // y: 'bottom',
-                feature: {
-                    magicType: {
-                        type: ['stack', 'tiled']
-                    },
-                    dataView: {},
-                    saveAsImage: {
-                        pixelRatio: 2
-                    }
-                }
-            },
-            tooltip: {},
-            xAxis: {
-                data: xAxisData,
-                splitLine: {
-                    show: false
-                }
-            },
-            yAxis: {
-            },
-            series: [{
-                name: 'bar',
-                type: 'bar',
-                data: data1,
-                animationDelay: function (idx) {
-                    return idx * 10;
-                }
-            }, {
-                name: 'bar2',
-                type: 'bar',
-                data: data2,
-                animationDelay: function (idx) {
-                    return idx * 10 + 100;
-                }
-            }],
-            animationEasing: 'elasticOut',
-            animationDelayUpdate: function (idx) {
-                return idx * 5;
-            }
-        };
-        myChart.setOption(option);
-</script>
-        
-        
-
-
-
-<p>代码：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;% echarts chart2 <span class="number">400</span> <span class="string">&#x27;85%&#x27;</span> %&#125;</span><br><span class="line">&lt;script src=<span class="string">&quot;https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">var</span> myChart = echarts.init(<span class="built_in">document</span>.getElementById(<span class="string">&#x27;chart2&#x27;</span>));</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> xAxisData = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> data1 = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> data2 = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            xAxisData.push(<span class="string">&#x27;Object&#x27;</span> + i);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            data1.push((<span class="built_in">Math</span>.sin(i / <span class="number">5</span>) * (i / <span class="number">5</span> -<span class="number">10</span>) + i / <span class="number">6</span>) * <span class="number">5</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            data2.push((<span class="built_in">Math</span>.cos(i / <span class="number">5</span>) * (i / <span class="number">5</span> -<span class="number">10</span>) + i / <span class="number">6</span>) * <span class="number">5</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        option = &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">title</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">text</span>: <span class="string">&#x27; &#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">legend</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: [<span class="string">&#x27;bar&#x27;</span>, <span class="string">&#x27;bar2&#x27;</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">toolbox</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="comment">// y: &#x27;bottom&#x27;,</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">feature</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">magicType</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                        <span class="attr">type</span>: [<span class="string">&#x27;stack&#x27;</span>, <span class="string">&#x27;tiled&#x27;</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">dataView</span>: &#123;&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">saveAsImage</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                        <span class="attr">pixelRatio</span>: <span class="number">2</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">tooltip</span>: &#123;&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">xAxis</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: xAxisData,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">splitLine</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">show</span>: <span class="literal">false</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">yAxis</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">series</span>: [&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">name</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">type</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: data1,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">animationDelay</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="keyword">return</span> idx * <span class="number">10</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;, &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">name</span>: <span class="string">&#x27;bar2&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">type</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: data2,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">animationDelay</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="keyword">return</span> idx * <span class="number">10</span> + <span class="number">100</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;],</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">animationEasing</span>: <span class="string">&#x27;elasticOut&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">animationDelayUpdate</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="keyword">return</span> idx * <span class="number">5</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        myChart.setOption(option);</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，标签内的第一个参数和表格ID要对应一致。</p>
-<h3 id="Google-Charts图表插入样例"><a href="#Google-Charts图表插入样例" class="headerlink" title="Google Charts图表插入样例"></a>Google Charts图表插入样例</h3><p><a href="https://developers.google.com/chart/interactive/docs">更多图例参考官网实例库</a></p>
-<p>效果：</p>
-<div id="chart1" style="width: 85%;height: 400px;margin: 0 auto"></div>
-
-
-	
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-    google.charts.load('current', {'packages':['gantt']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-    
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Task ID');
-      data.addColumn('string', 'Task Name');
-      data.addColumn('string', 'Resource');
-      data.addColumn('date', 'Start Date');
-      data.addColumn('date', 'End Date');
-      data.addColumn('number', 'Duration');
-      data.addColumn('number', 'Percent Complete');
-      data.addColumn('string', 'Dependencies');
-    
-      data.addRows([
-        ['2014Spring', 'Spring 2014', 'spring',
-         new Date(2014, 2, 22), new Date(2014, 5, 20), null, 100, null],
-        ['2014Summer', 'Summer 2014', 'summer',
-         new Date(2014, 5, 21), new Date(2014, 8, 20), null, 100, null],
-        ['2014Autumn', 'Autumn 2014', 'autumn',
-         new Date(2014, 8, 21), new Date(2014, 11, 20), null, 100, null],
-        ['2014Winter', 'Winter 2014', 'winter',
-         new Date(2014, 11, 21), new Date(2015, 2, 21), null, 100, null],
-        ['2015Spring', 'Spring 2015', 'spring',
-         new Date(2015, 2, 22), new Date(2015, 5, 20), null, 50, null],
-        ['2015Summer', 'Summer 2015', 'summer',
-         new Date(2015, 5, 21), new Date(2015, 8, 20), null, 0, null],
-        ['2015Autumn', 'Autumn 2015', 'autumn',
-         new Date(2015, 8, 21), new Date(2015, 11, 20), null, 0, null],
-        ['2015Winter', 'Winter 2015', 'winter',
-         new Date(2015, 11, 21), new Date(2016, 2, 21), null, 0, null],
-        ['Football', 'Football Season', 'sports',
-         new Date(2014, 8, 4), new Date(2015, 1, 1), null, 100, null],
-        ['Baseball', 'Baseball Season', 'sports',
-         new Date(2015, 2, 31), new Date(2015, 9, 20), null, 14, null],
-        ['Basketball', 'Basketball Season', 'sports',
-         new Date(2014, 9, 28), new Date(2015, 5, 20), null, 86, null],
-        ['Hockey', 'Hockey Season', 'sports',
-         new Date(2014, 9, 8), new Date(2015, 5, 21), null, 89, null]
-      ]);
-    
-      var options = {
-        height: 400,
-        gantt: {
-          trackHeight: 30
-        }
-      };
-    
-      var chart = new 										    					  
-      google.visualization.Gantt(document.getElementById('chart1'));
-      chart.draw(data, options);
-    }
-</script>
-        
-        
-
-
-<p>代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% echarts chart1 400 &#x27;85%&#x27; %&#125;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;https://www.gstatic.com/charts/loader.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    google.charts.load(&#x27;current&#x27;, &#123;&#x27;packages&#x27;:[&#x27;gantt&#x27;]&#125;);</span><br><span class="line">    google.charts.setOnLoadCallback(drawChart);</span><br><span class="line"></span><br><span class="line">    function drawChart() &#123;</span><br><span class="line"></span><br><span class="line">      var data = new google.visualization.DataTable();</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Task ID&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Task Name&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Resource&#x27;);</span><br><span class="line">      data.addColumn(&#x27;date&#x27;, &#x27;Start Date&#x27;);</span><br><span class="line">      data.addColumn(&#x27;date&#x27;, &#x27;End Date&#x27;);</span><br><span class="line">      data.addColumn(&#x27;number&#x27;, &#x27;Duration&#x27;);</span><br><span class="line">      data.addColumn(&#x27;number&#x27;, &#x27;Percent Complete&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Dependencies&#x27;);</span><br><span class="line"></span><br><span class="line">      data.addRows([</span><br><span class="line">        [&#x27;2014Spring&#x27;, &#x27;Spring 2014&#x27;, &#x27;spring&#x27;,</span><br><span class="line">         new Date(2014, 2, 22), new Date(2014, 5, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Summer&#x27;, &#x27;Summer 2014&#x27;, &#x27;summer&#x27;,</span><br><span class="line">         new Date(2014, 5, 21), new Date(2014, 8, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Autumn&#x27;, &#x27;Autumn 2014&#x27;, &#x27;autumn&#x27;,</span><br><span class="line">         new Date(2014, 8, 21), new Date(2014, 11, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Winter&#x27;, &#x27;Winter 2014&#x27;, &#x27;winter&#x27;,</span><br><span class="line">         new Date(2014, 11, 21), new Date(2015, 2, 21), null, 100, null],</span><br><span class="line">        [&#x27;2015Spring&#x27;, &#x27;Spring 2015&#x27;, &#x27;spring&#x27;,</span><br><span class="line">         new Date(2015, 2, 22), new Date(2015, 5, 20), null, 50, null],</span><br><span class="line">        [&#x27;2015Summer&#x27;, &#x27;Summer 2015&#x27;, &#x27;summer&#x27;,</span><br><span class="line">         new Date(2015, 5, 21), new Date(2015, 8, 20), null, 0, null],</span><br><span class="line">        [&#x27;2015Autumn&#x27;, &#x27;Autumn 2015&#x27;, &#x27;autumn&#x27;,</span><br><span class="line">         new Date(2015, 8, 21), new Date(2015, 11, 20), null, 0, null],</span><br><span class="line">        [&#x27;2015Winter&#x27;, &#x27;Winter 2015&#x27;, &#x27;winter&#x27;,</span><br><span class="line">         new Date(2015, 11, 21), new Date(2016, 2, 21), null, 0, null],</span><br><span class="line">        [&#x27;Football&#x27;, &#x27;Football Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 8, 4), new Date(2015, 1, 1), null, 100, null],</span><br><span class="line">        [&#x27;Baseball&#x27;, &#x27;Baseball Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2015, 2, 31), new Date(2015, 9, 20), null, 14, null],</span><br><span class="line">        [&#x27;Basketball&#x27;, &#x27;Basketball Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 9, 28), new Date(2015, 5, 20), null, 86, null],</span><br><span class="line">        [&#x27;Hockey&#x27;, &#x27;Hockey Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 9, 8), new Date(2015, 5, 21), null, 89, null]</span><br><span class="line">      ]);</span><br><span class="line"></span><br><span class="line">      var options = &#123;</span><br><span class="line">        height: 400,</span><br><span class="line">        gantt: &#123;</span><br><span class="line">          trackHeight: 30</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      var chart = new 										    					  </span><br><span class="line">      google.visualization.Gantt(document.getElementById(&#x27;chart1&#x27;));</span><br><span class="line">      chart.draw(data, options);</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>云计算</category>
-      </categories>
-      <tags>
-        <tag>数据呈现</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Markdown数学公式</title>
     <url>/2019/04/03/5/</url>
     <content><![CDATA[<p>数学公式语法</p>
@@ -1189,20 +1189,6 @@
       </tags>
   </entry>
   <entry>
-    <title>等级保护与分级保护</title>
-    <url>/2019/06/30/7/</url>
-    <content><![CDATA[<p>数据中心中的信息安全问题已经成为人们关注的焦点中的焦点，如何让人们安心地将自己的私密信息放到数据中心中去，消除心中疑虑，仍有很多工作要做。从数据中心角度来讲，只能不断地加强对自身信息安全的管理，保护数据中心的各类信息不受泄露或损坏。在这里，在国家层面也制定了相应的标准做参考，强制性地要求各信息中心单位能够遵守各项信息安全规定，提升整体的信息安全防护措施。</p>
-<span id="more"></span>
-
-<blockquote>
-<p>8 月 16 日，安徽网警依法查处一起违反网络安全等级保护制度的案件，因蚌埠怀远县教师进修学校网站因网络安全等级保护制度落实不到位，遭黑客攻击入侵，安徽省公安厅对学校进行了处罚，同时约谈了当地分管的副县长。这件事情之所以受到广泛关注在于处罚力度，以往这类事件也偶有发生，但并没有相应的处罚，大家总是觉得这类事情不算个事儿。实际上，国家早就颁布了相关法案，只是在执行上多采用警告、约谈的方式，实际进行处罚的并不多，这次显然国家加大了处罚力度，对不符合安全要求的就要坚决处理。说到这儿，数据中心信息安全处罚依据有两个方面国家制度：等级保护和分级保护，从事信息交互的单位要遵守这些制度，触犯了就要受到处罚。</p>
-</blockquote>
-<h2 id="等级保护"><a href="#等级保护" class="headerlink" title="等级保护"></a>等级保护</h2><p>等级保护全称是信息安全等级保护，2003 年由中办、国办转发《国家信息化领导小组关于加强信息安全保障工作的意见》提出实行信息安全等级保护、建立国家信息安全保障体系的明确要求，公安部又颁布了《信息安全等级保护管理办法》。在 2009 年，公安部联合国家保密局、国家密码管理局、国务院信息化工作办公室发布《关于组织开展 2009 年度本市重要信息系统等级保护工作的通知》，可见国家层面对信息安全是非常重视了，不断加强健全信息安全方面的法律法规，加强信息安全方面的管理。等级保护按照破坏性、影响力分为五级：一级（自主保护）、二级（指导保护）、三级（监督保护）、四级（强制保护）、五级（专控保护）。其中，一二级一般不影响国家安全，但三级及以上就有可能对国家安全造成损害。等级保护的对象是涉及国计民生的重要信息系统和通信基础信息系统，自然包括那些中大型数据中心，而不论它是否涉密。公安机关是等级保护工作的主管部门，负责信息安全等级保护工作的监督、检查、指导。我们打开一个正规的网站，在网站的下方都会有“X 公网安备 XXXX 号”的字样，证明此网站经过了公关机关的审核，已经颁发了等级保护备案证明，大家可以放心使用和访问，对于那些没有经过公关机关备案的，多半是钓鱼网站或黑网站，不要访问和使用这类网站。国家保密工作部门、国家密码管理部门负责等级保护工作中有关保密工作和密码工作的监督、检查、指导，国信办及地方信息化领导小组办事机构负责等级保护工作部门间的协调，涉及国家秘密信息系统的等级保护监督管理工作由国家保密工作部门负责。</p>
-<h2 id="分级保护"><a href="#分级保护" class="headerlink" title="分级保护"></a>分级保护</h2><p>分级保护是中央保密委员会于 2004 年 12 月下发的《关于加强信息安全保障工作中保密管理若干一件》明确提出要建立健全涉密信息系统分级保护制度，2005 年 12 月国家保密局下发了《涉及国家秘密的信息系统分级保护管理办法》，同时，《保密法》修订草案也增加了网络安全保密管理的条款。分级保护分为秘密级、机密级和机密级（增强）、绝密级三个等级。三个等级对应等级保护的三四五级。分级保护由国家保密局来管理，推广带有强制性。分级保护定级是依据信息的重要性，以信息最高密级确定受保护的级别。涉密数据中心建设使用单位将涉密信息定级和建设使用情况，上报业务主管部门和保密工作机构和负责数据中心审批的保密工作部门备案，并接受保密部门的监督、检查和指导。定级要素是数据中心内处理的最高密级的数据。简单地讲，如果数据中心存在机密级和秘密级文件，那么数据中心为机密级。另外，还有一个规定是，如果机密级数据中心中处理的数据涉及军工，国防等领域，需要按机密增强进行防护。由保密局检查监督。</p>
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>从以上介绍中不难发现，等级保护和分级保护具有明显不同。主管单位不同、等级定义也不同、依据标准不同等等。大部分的数据中心都要经过等级保护，而只有很少的数据中心需要分级保护审核备案。等级保护是国家从整体上、根本上解决国家信息安全问题的办法， 进一步确定了信息安全发展的主线和中心任务， 提出了总体要求。对数据中心实行等级保护是国家法定制度和基本国策，是开展信息安全保护工作的有效办法，是信息安全保护工作的发展方向。而分级保护则是国家信息安全等级保护在涉及国家秘密信息的数据中心中特殊保护措施与方法。由于国家秘密信息与公开信息在内容和特性上有着明显的区别，所以涉密的数据中心和公众信息的数据中心在保障安全的原则、系统和方法等方面也有不同的要求。既不能用维护国家秘密信息安全的办法去维护国家公众信息安全，以至于影响信息的合理利用，阻碍信息化的发展；也不能用维护公众信息安全的办法来维护国家的秘密信息安全，以至于窃密、泄密事件的发生，危害国家的安全和利益，同样影响信息化的健康发展。说到底，还是两种保护标准的出发点不同，面向的对象也不同，数据中心要根据自己处理信息的安全去考虑做等级保护还是分级保护的审核和备案，公安机关和保密局也会根.</p>
-]]></content>
-  </entry>
-  <entry>
     <title>IDC机房建设标准</title>
     <url>/2019/08/10/8/</url>
     <content><![CDATA[<p>IDC机房建设标准</p>
@@ -1275,6 +1261,20 @@
 <li>投资额：190万（包装修、电源、消防、报警等，但不含服务器及硬件设备）。</li>
 </ol>
 </blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>等级保护与分级保护</title>
+    <url>/2019/06/30/7/</url>
+    <content><![CDATA[<p>数据中心中的信息安全问题已经成为人们关注的焦点中的焦点，如何让人们安心地将自己的私密信息放到数据中心中去，消除心中疑虑，仍有很多工作要做。从数据中心角度来讲，只能不断地加强对自身信息安全的管理，保护数据中心的各类信息不受泄露或损坏。在这里，在国家层面也制定了相应的标准做参考，强制性地要求各信息中心单位能够遵守各项信息安全规定，提升整体的信息安全防护措施。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>8 月 16 日，安徽网警依法查处一起违反网络安全等级保护制度的案件，因蚌埠怀远县教师进修学校网站因网络安全等级保护制度落实不到位，遭黑客攻击入侵，安徽省公安厅对学校进行了处罚，同时约谈了当地分管的副县长。这件事情之所以受到广泛关注在于处罚力度，以往这类事件也偶有发生，但并没有相应的处罚，大家总是觉得这类事情不算个事儿。实际上，国家早就颁布了相关法案，只是在执行上多采用警告、约谈的方式，实际进行处罚的并不多，这次显然国家加大了处罚力度，对不符合安全要求的就要坚决处理。说到这儿，数据中心信息安全处罚依据有两个方面国家制度：等级保护和分级保护，从事信息交互的单位要遵守这些制度，触犯了就要受到处罚。</p>
+</blockquote>
+<h2 id="等级保护"><a href="#等级保护" class="headerlink" title="等级保护"></a>等级保护</h2><p>等级保护全称是信息安全等级保护，2003 年由中办、国办转发《国家信息化领导小组关于加强信息安全保障工作的意见》提出实行信息安全等级保护、建立国家信息安全保障体系的明确要求，公安部又颁布了《信息安全等级保护管理办法》。在 2009 年，公安部联合国家保密局、国家密码管理局、国务院信息化工作办公室发布《关于组织开展 2009 年度本市重要信息系统等级保护工作的通知》，可见国家层面对信息安全是非常重视了，不断加强健全信息安全方面的法律法规，加强信息安全方面的管理。等级保护按照破坏性、影响力分为五级：一级（自主保护）、二级（指导保护）、三级（监督保护）、四级（强制保护）、五级（专控保护）。其中，一二级一般不影响国家安全，但三级及以上就有可能对国家安全造成损害。等级保护的对象是涉及国计民生的重要信息系统和通信基础信息系统，自然包括那些中大型数据中心，而不论它是否涉密。公安机关是等级保护工作的主管部门，负责信息安全等级保护工作的监督、检查、指导。我们打开一个正规的网站，在网站的下方都会有“X 公网安备 XXXX 号”的字样，证明此网站经过了公关机关的审核，已经颁发了等级保护备案证明，大家可以放心使用和访问，对于那些没有经过公关机关备案的，多半是钓鱼网站或黑网站，不要访问和使用这类网站。国家保密工作部门、国家密码管理部门负责等级保护工作中有关保密工作和密码工作的监督、检查、指导，国信办及地方信息化领导小组办事机构负责等级保护工作部门间的协调，涉及国家秘密信息系统的等级保护监督管理工作由国家保密工作部门负责。</p>
+<h2 id="分级保护"><a href="#分级保护" class="headerlink" title="分级保护"></a>分级保护</h2><p>分级保护是中央保密委员会于 2004 年 12 月下发的《关于加强信息安全保障工作中保密管理若干一件》明确提出要建立健全涉密信息系统分级保护制度，2005 年 12 月国家保密局下发了《涉及国家秘密的信息系统分级保护管理办法》，同时，《保密法》修订草案也增加了网络安全保密管理的条款。分级保护分为秘密级、机密级和机密级（增强）、绝密级三个等级。三个等级对应等级保护的三四五级。分级保护由国家保密局来管理，推广带有强制性。分级保护定级是依据信息的重要性，以信息最高密级确定受保护的级别。涉密数据中心建设使用单位将涉密信息定级和建设使用情况，上报业务主管部门和保密工作机构和负责数据中心审批的保密工作部门备案，并接受保密部门的监督、检查和指导。定级要素是数据中心内处理的最高密级的数据。简单地讲，如果数据中心存在机密级和秘密级文件，那么数据中心为机密级。另外，还有一个规定是，如果机密级数据中心中处理的数据涉及军工，国防等领域，需要按机密增强进行防护。由保密局检查监督。</p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>从以上介绍中不难发现，等级保护和分级保护具有明显不同。主管单位不同、等级定义也不同、依据标准不同等等。大部分的数据中心都要经过等级保护，而只有很少的数据中心需要分级保护审核备案。等级保护是国家从整体上、根本上解决国家信息安全问题的办法， 进一步确定了信息安全发展的主线和中心任务， 提出了总体要求。对数据中心实行等级保护是国家法定制度和基本国策，是开展信息安全保护工作的有效办法，是信息安全保护工作的发展方向。而分级保护则是国家信息安全等级保护在涉及国家秘密信息的数据中心中特殊保护措施与方法。由于国家秘密信息与公开信息在内容和特性上有着明显的区别，所以涉密的数据中心和公众信息的数据中心在保障安全的原则、系统和方法等方面也有不同的要求。既不能用维护国家秘密信息安全的办法去维护国家公众信息安全，以至于影响信息的合理利用，阻碍信息化的发展；也不能用维护公众信息安全的办法来维护国家的秘密信息安全，以至于窃密、泄密事件的发生，危害国家的安全和利益，同样影响信息化的健康发展。说到底，还是两种保护标准的出发点不同，面向的对象也不同，数据中心要根据自己处理信息的安全去考虑做等级保护还是分级保护的审核和备案，公安机关和保密局也会根.</p>
 ]]></content>
   </entry>
   <entry>

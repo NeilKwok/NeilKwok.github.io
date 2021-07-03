@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.aidata.ink","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="数据库(Database)是按照数据结构来组织、存储和管理数据的仓库。企业发展到一定程度，数据存储会面临一些问题：如何处理大量数据的检索与访问，如何保证数据信息的一致性和完整性，如何分享数据并保证安全性。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL笔记">
+<meta property="og:url" content="http://www.aidata.ink/2019/04/25/6/index.html">
+<meta property="og:site_name" content="aiData">
+<meta property="og:description" content="数据库(Database)是按照数据结构来组织、存储和管理数据的仓库。企业发展到一定程度，数据存储会面临一些问题：如何处理大量数据的检索与访问，如何保证数据信息的一致性和完整性，如何分享数据并保证安全性。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-04-25T06:46:27.000Z">
+<meta property="article:modified_time" content="2020-03-01T11:23:56.288Z">
+<meta property="article:author" content="Neil">
+<meta property="article:tag" content="SQL">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.aidata.ink/2019/04/25/6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://www.aidata.ink/2019/04/25/6/","path":"2019/04/25/6/","title":"SQL笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SQL笔记 | aiData</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100963046-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-100963046-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">aiData</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Es Muss Sein!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">数据库概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">SQL语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AE%9A%E4%B9%89%E8%AF%AD%E8%A8%80DDL"><span class="nav-number">2.1.</span> <span class="nav-text">数据定义语言DDL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E8%AF%AD%E8%A8%80DML"><span class="nav-number">2.2.</span> <span class="nav-text">数据操作语言DML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E8%AF%AD%E8%A8%80DQL"><span class="nav-number">2.3.</span> <span class="nav-text">数据查询语言DQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8E%A7%E5%88%B6%E8%AF%AD%E8%A8%80DCL"><span class="nav-number">2.4.</span> <span class="nav-text">数据控制语言DCL</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Neil"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Neil</p>
+  <div class="site-description" itemprop="description">AI/Big Data/Cloud Computing</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/neilkwok" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;neilkwok" rel="noopener" target="_blank"><i class="fab fa-github-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ME@GuoWei.Pub" title="E-Mail → mailto:ME@GuoWei.Pub" rel="noopener" target="_blank"><i class="fas fa-envelope-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCap-z1VLbEwWbfvaQIyR0kA" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCap-z1VLbEwWbfvaQIyR0kA" rel="noopener" target="_blank"><i class="fab fa-youtube-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/neil-kwok/" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;neil-kwok&#x2F;" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://www.aidata.ink/2019/04/25/6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Neil">
+      <meta itemprop="description" content="AI/Big Data/Cloud Computing">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aiData">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQL笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-25 14:46:27" itemprop="dateCreated datePublished" datetime="2019-04-25T14:46:27+08:00">2019-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>数据库(Database)是按照数据结构来组织、存储和管理数据的仓库。企业发展到一定程度，数据存储会面临一些问题：如何处理大量数据的检索与访问，如何保证数据信息的一致性和完整性，如何分享数据并保证安全性。</p>
+<span id="more"></span>
+
+<h3 id="数据库概述"><a href="#数据库概述" class="headerlink" title="数据库概述"></a>数据库概述</h3><p><strong>数据库经历了三个发展阶段</strong></p>
+<ol>
+<li><p>人工管理阶段</p>
+<blockquote>
+<p>时间：20世纪50年代以前 事件：计算机主要用于科学计算。从硬件层面看，当时没有直接用于存储的设备，仅能借助卡片、磁带等外存达到数据存储的目的；从软件层面看，当时也没有完整的操作系统以及专门管理数据的软件；从数据层面看，当时数据量非常小且有没固定的数据结构，所有数据都直接由用户管理。<br>特点：数据不能长期保存，没有对数据进行管理的软件系统，数据不能共享，数据不具有独立性。 </p>
+</blockquote>
+</li>
+<li><p>文件系统阶段</p>
+<blockquote>
+<p>时间：50年代后期到60年代中期 事件：计算机不仅用于科学计算，还运用到信息管理方面。从硬件层面看，这时出现了磁盘等数据存储设备；从软件层面看，系统可以按照文件的名称对其进行检索和访问，并可以实现文件内容的增加、修改与删除；从数据层面看，实现了文本内数据的结构化，即单个文本中各数据之间具有一定的关系，但从整体来看每个文件中的数据却是无结构的。<br>特点：数据可以长期保存，由文件系统管理数据，数据具有一定的共享性和独立性。 </p>
+</blockquote>
+</li>
+<li><p>数据库管理系统阶段</p>
+<blockquote>
+<p>时间：60年代后期 事件：数据库系统克服了文件系统的缺陷，提供了对数据更高级、更有效的管理，这个阶段程序与数据的联系通过数据库管理系统（DBMS）来实现，因此计算机可以用来存储和处理规模庞大的数据集。<br>特点：数据实现结构化，共享性高、独立性强。</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>数据库基本概念</strong></p>
+<ol>
+<li><p>数据库文件</p>
+<blockquote>
+<p>按照一定规则，存放在硬盘上的数据文件集合。所以，MySQL 里的数据库都能在计算机硬盘内某个文件夹里找到对应的数据文件。</p>
+</blockquote>
+</li>
+<li><p>数据库实例</p>
+<blockquote>
+<p>指计算机内存中处于运行状态的数据库程序，以及为这些程序分配的一些内存空间。 实例是位于内存中，只在数据库处运行状态时才存在。简单点来讲，数据库实例就是把数据库加载到内存里面。</p>
+</blockquote>
+</li>
+<li><p>数据库应用</p>
+<blockquote>
+<p>建立在数据库上，对其功能进行扩充的程序。 qq 和手机银行app 都属于数据库应用程序，它们后台都需要调用数据库。 </p>
+</blockquote>
+</li>
+</ol>
+<p><strong>数据库分类</strong></p>
+<ol>
+<li><p>关系型数据库</p>
+<blockquote>
+<p>Oracle 运行稳定、可移植性高、功能齐全、性能超群，适用于大型企业。</p>
+<p>DB2 速度快、可靠性好、适用于海量数据、恢复性极强，适用于大中型企业。</p>
+<p>MySQL 开源、体积小、速度快，适用于中小型企业。</p>
+<p>SQL Server 全面高效、界面友好易操作，但是不跨平台，适用于中小型企业。</p>
+</blockquote>
+</li>
+<li><p>非关系型数据库</p>
+<blockquote>
+<p>NoSQL</p>
+<p>MongoDB</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>表结构</strong></p>
+<ol>
+<li><p>什么是表结构</p>
+<blockquote>
+<p>由固定列和任意行构成的二维表结构的数据集。 表中的列称为字段，表中的行称为记录。<br>以字段为基本的存储单位和计算单位。<br>每一个字段必须有字段名，且同一个表中的字段名不能重复。<br>每个字段的数据类型必须一致。</p>
+</blockquote>
+</li>
+<li><p>为什么要使用表结构数据</p>
+<blockquote>
+<p>除Excel、WPS之外的其他分析工具，都是使用表结构的存储格式</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>存储引擎</strong></p>
+<ol>
+<li><p>InnoDB：InnoDB：事务型数据库的首选引擎，也是MySQL的默认事务型引擎，支持事务安全表（ACID），支持行锁定和外键。</p>
+<blockquote>
+<p>使用场景：由于其支持事务处理、外键、支持崩溃修复能力和并发控制。 如果需要对事务的完整性要求比较高（比如银行），要求实现并发控制（比如售票），那选择InnoDB有很大的优势。<br>如果需要频繁的更新、删除操作的数据库，也可以选择InnoDB，因为支持事务的提交（commit）和回滚（rollback）。 </p>
+</blockquote>
+</li>
+<li><p>MyISAM：在Web、数据仓储和其他应用环境下最常使用的存储引擎之一，拥有较高的插入、查询速度，但不支持事物和外键</p>
+<blockquote>
+<p>使用场景：如果表主要是用于插入新记录和读出记录，那么选择MyISAM能实现处理高效率。</p>
+</blockquote>
+</li>
+<li><p>MEMORY：将表中的数据存储到内存中，未查询和引用其他表数据提供快速访问。</p>
+<blockquote>
+<p>使用场景：如果需要该数据库中一个用于查询的临时表。</p>
+</blockquote>
+</li>
+<li><p>ARCHIVE：仅仅支持最基本的插入和查询，它使用zlib压缩库，在记录被请求时会实时压缩，所以它经常被用来当做仓库使用。</p>
+<blockquote>
+<p>使用场景：由于高压缩和快速插入的特点Archive非常适合作为日志表的存储引擎，但是前提是不经常对该表进行查询操作。</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>ER图</strong></p>
+<p>在创建数据库表之前，首先需要设计数据库。 设计数据库表的主要工具是ER图，它以图形化的形式来表现数据库中有哪些对象，每一个对象有哪些属性，对象和对象之间有什么关系。</p>
+<ol>
+<li>实体：实体就是一个个对象</li>
+<li>属性：属性就是实体所具有的某个特征属性</li>
+<li>关系：关系就是实体和实体之间或者实体内部之间的联系</li>
+</ol>
+<p>在ER图中，矩形代表实体，椭圆代表属性，菱形代表关系，各个形状之间用线段连接。</p>
+<h3 id="SQL语法"><a href="#SQL语法" class="headerlink" title="SQL语法"></a>SQL语法</h3><p>SQL对大小写不敏感。<br>用#或– 单行注释，用/* */多行注释，注释语句不可执行。</p>
+<h4 id="数据定义语言DDL"><a href="#数据定义语言DDL" class="headerlink" title="数据定义语言DDL"></a>数据定义语言DDL</h4><p><strong>数据库增删改查</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> databases;</span><br><span class="line"><span class="keyword">create</span> database <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> database <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"><span class="keyword">alter</span> database <span class="string">&#x27;name&#x27;</span> charactor <span class="keyword">set</span> <span class="string">&#x27;format&#x27;</span>;</span><br><span class="line">use <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"><span class="keyword">drop</span> database <span class="string">&#x27;name&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据表增删改查</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> (</span><br><span class="line">    <span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type1&#x27;</span> <span class="string">&#x27;restrict1&#x27;</span></span><br><span class="line">    <span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type2&#x27;</span> <span class="string">&#x27;restrict2&#x27;</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"><span class="keyword">show</span> tables;</span><br><span class="line"><span class="keyword">desc</span> <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;oriname&#x27;</span> rename <span class="string">&#x27;newname&#x27;</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> change <span class="string">&#x27;orifield&#x27;</span> <span class="string">&#x27;newfield&#x27;</span> <span class="string">&#x27;type&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>];</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;newtype&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>];</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> <span class="keyword">add</span> <span class="string">&#x27;newfield&#x27;</span> <span class="string">&#x27;type&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>][<span class="string">&#x27;pos&#x27;</span>];</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;type&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>] <span class="keyword">first</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;typr&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>] after <span class="string">&#x27;field2&#x27;</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> <span class="keyword">drop</span> <span class="string">&#x27;field&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据类型</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int</td>
+<td>4字节整数值</td>
+<td>text</td>
+<td>长文本字符串型</td>
+</tr>
+<tr>
+<td>float</td>
+<td>单精度浮点型，float(5,2)表示最多5位数，其中有两位小数</td>
+<td>date</td>
+<td>日期型，‘yyyy-MM-dd’</td>
+</tr>
+<tr>
+<td>char</td>
+<td>固定长度字符串型，如char(10)，‘abc ’</td>
+<td>time</td>
+<td>时间型，‘hh:mm:ss’</td>
+</tr>
+<tr>
+<td>varchar</td>
+<td>可变长度字符串型，如varchar(10)，‘abc’</td>
+<td>datetime</td>
+<td>日期时间型，‘yyyy-MM-dd hh:mm:ss’</td>
+</tr>
+</tbody></table>
+<p><strong>数据完整性</strong></p>
+<p>主体完整性：主键约束/唯一约束/唯一约束</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(field1<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27; primary key,&#x27;</span>field2<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;[,…]);</span></span><br><span class="line"><span class="string">create table &#x27;</span>name<span class="string">&#x27;(&#x27;</span>field1<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;,&#x27;</span>field2<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;[,…], primary key(&#x27;</span>field<span class="string">&#x27;));</span></span><br><span class="line"><span class="string">create table &#x27;</span>name<span class="string">&#x27;(&#x27;</span>field1<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;,&#x27;</span>field2<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;[,…], primary key(&#x27;</span>field1<span class="string">&#x27;, &#x27;</span>field2<span class="string">&#x27;[,…]));</span></span><br><span class="line"><span class="string">alter table &#x27;</span>name<span class="string">&#x27; drop primary key;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">create table &#x27;</span>name<span class="string">&#x27;(&#x27;</span>field1 <span class="string">&#x27;type,&#x27;</span>field2 <span class="string">&#x27;type&#x27;</span> <span class="keyword">unique</span>[,…]);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> <span class="keyword">drop</span> index <span class="string">&#x27;restrict&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(<span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type&#x27;</span> <span class="keyword">primary</span> key auto_increment,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type&#x27;</span>[,…]); </span><br><span class="line"><span class="keyword">Alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> auto_increment<span class="operator">=</span>n;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;type&#x27;</span>[ <span class="string">&#x27;restrict&#x27;</span>];</span><br></pre></td></tr></table></figure>
+
+<p>域完整性：非空约束/默认约束</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(<span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type&#x27;</span>,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type&#x27;</span> <span class="keyword">not</span> <span class="keyword">null</span>[,…]);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;type&#x27;</span>[ <span class="string">&#x27;restrict&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(<span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type1&#x27;</span>,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type2&#x27;</span> <span class="keyword">default</span> <span class="string">&#x27;value&#x27;</span>[ ,…]);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;type&#x27;</span>[ <span class="string">&#x27;restrict&#x27;</span>] ;</span><br></pre></td></tr></table></figure>
+
+<p>参照完整性：外键约束</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">creat <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(<span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type1&#x27;</span>,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type2&#x27;</span>[,……,][<span class="keyword">constraint</span> 外键约束名] <span class="keyword">foreign</span> key(<span class="string">&#x27;field&#x27;</span>) <span class="keyword">references</span> <span class="string">&#x27;&#x27;</span>name(<span class="string">&#x27;field&#x27;</span>));</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> <span class="keyword">drop</span> <span class="keyword">foreign</span> key <span class="string">&#x27;restrict&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>用户自定义完整性：检查约束</p>
+<p><strong>视图</strong></p>
+<p>视图是存储在数据库中的虚拟表，视图中不保存数据，内部封装了一条SELECT语句,数据来源于查询的一个或多个基本表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> <span class="string">&#x27;viewname&#x27;</span> <span class="keyword">as</span> <span class="keyword">select</span> <span class="string">&#x27;query&#x27;</span>;</span><br><span class="line"><span class="keyword">desc</span> <span class="string">&#x27;viewname&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,...] <span class="keyword">from</span> <span class="string">&#x27;viewname&#x27;</span>[ <span class="keyword">where</span> <span class="string">&#x27;criteria&#x27;</span>];</span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace <span class="keyword">or</span> <span class="keyword">alter</span>] <span class="keyword">view</span> <span class="string">&#x27;viewname&#x27;</span> <span class="keyword">as</span> <span class="keyword">select</span> <span class="string">&#x27;query&#x27;</span>;</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> <span class="string">&#x27;viewname&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>索引</strong></p>
+<p>索引的意义</p>
+<blockquote>
+<p>用于快速找出在某个字段中有特定值的行。 如果不使用索引，MySQL必须从第一条记录开始检索表中的每一条记录，直到找出相关的行，那么表越大，查询数据所花费的时间就越多。<br>如果表中查询的字段有索引，MySQL能够快速到达一个位置去检索数据文件，而不必查看所有数据，那么将会节省很大一部分查询时间。</p>
+</blockquote>
+<p>索引的优缺点</p>
+<blockquote>
+<p>优点：</p>
+<p>​    通过索引对数据进行检索，大大提高了数据的查询效率</p>
+<p>缺点：</p>
+<p>​    创建索引和维护索引要耗费时间，并且随着数据量的增加所耗费的时间也会增加</p>
+<p>​    索引也需要占空间的，创建的索引太多，索引文件也会占用数据库的存储空间</p>
+<p>​    当对表中的数据进行增加、删除、修改时，索引也需要动态的维护，降低了数据的维护速度</p>
+</blockquote>
+<p>索引分类</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单值索引</td>
+<td>一个索引只包含一个字段</td>
+</tr>
+<tr>
+<td>唯一索引</td>
+<td>索引字段的取值不能重复，可以有空值，但空值也只能出现一次</td>
+</tr>
+<tr>
+<td>主键索引</td>
+<td>索引字段的取值不能为空，也不能重复</td>
+</tr>
+<tr>
+<td>主键索引</td>
+<td>一个索引包含多个字段</td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>仅限MyISAM引擎，只能在CHAR,VARCHAR,TEXT类型的字段上使用，通过关键字符，就能找到该字段所属的记录行</td>
+</tr>
+<tr>
+<td>空间索引</td>
+<td>仅限MyISAM引擎。对空间数据类型的字段建立的索引，且要求索引字段的取值不能为空</td>
+</tr>
+</tbody></table>
+<p>索引操作</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> index <span class="string">&#x27;index&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;tablename&#x27;</span>(<span class="string">&#x27;field&#x27;</span>);</span><br><span class="line"># 在表中定义了主键约束时，会自动创建一个对应的主键索引</span><br><span class="line"># 在表中定义了外键约束时，会自动创建一个对应的普通索引</span><br><span class="line"># 在表中定义了唯一约束时，会自动创建一个对应的唯一索引</span><br><span class="line"><span class="keyword">show</span> index <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>;</span><br><span class="line"><span class="keyword">drop</span> index <span class="string">&#x27;index&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;tablename&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>需要创建索引的情况</p>
+<blockquote>
+<p>主键和外键字段自动创建索引</p>
+<p>频繁作为查询条件的字段应该创建索引</p>
+<p>查询中排序的字段应该创建索引</p>
+<p>查询中分组或统计的字段应该创建索引</p>
+</blockquote>
+<p>不需要创建索引的情况</p>
+<blockquote>
+<p>表中记录太少不需要创建索引</p>
+<p>需要频繁增删改的字段不适合创建索引</p>
+<p>where子句中用不到的字段不需要创建索引</p>
+<p>重复值较多的字段不需要创建索引</p>
+</blockquote>
+<h4 id="数据操作语言DML"><a href="#数据操作语言DML" class="headerlink" title="数据操作语言DML"></a>数据操作语言DML</h4><p><strong>添加数据</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">&#x27;tablename&#x27;</span>(<span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;value1&#x27;</span>,…]) <span class="keyword">values</span>(<span class="string">&#x27;value1&#x27;</span>[,<span class="string">&#x27;value1&#x27;</span>,…]), (<span class="string">&#x27;value1&#x27;</span>[,<span class="string">&#x27;value2&#x27;</span>,…])[,…]);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">values</span>(<span class="string">&#x27;value1&#x27;</span>[,<span class="string">&#x27;value1&#x27;</span>,…]), (<span class="string">&#x27;value1&#x27;</span>[,<span class="string">&#x27;value1&#x27;</span>,…])[,…]); </span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> sqlsafeupdates<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line">load data infile ‘$dir$.csv’<span class="keyword">into</span> <span class="keyword">table</span> <span class="string">&#x27;tablename&#x27;</span> fields terminated <span class="keyword">by</span> ‘,<span class="string">&#x27; ignore 1 lines; </span></span><br></pre></td></tr></table></figure>
+
+<p><strong>更新数据</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">set</span> <span class="string">&#x27;field1&#x27;</span><span class="operator">=</span><span class="string">&#x27;value1&#x27;</span>[, <span class="string">&#x27;value1&#x27;</span><span class="operator">=</span><span class="string">&#x27;value1&#x27;</span>,…][ <span class="keyword">where</span> <span class="string">&#x27;crifield&#x27;</span><span class="operator">=</span><span class="string">&#x27;crivalue&#x27;</span>];</span><br></pre></td></tr></table></figure>
+
+<p><strong>删除数据</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>[ <span class="keyword">where</span> <span class="string">&#x27;crifield&#x27;</span><span class="operator">=</span><span class="string">&#x27;crivalue&#x27;</span>]; </span><br><span class="line"><span class="keyword">truncate</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"># <span class="keyword">delete</span>和<span class="keyword">truncate</span>区别</span><br><span class="line"># <span class="keyword">delete</span>可以添加删除条件删除表中部分数据，<span class="keyword">truncate</span>只能删除表中全部数据。</span><br><span class="line"># <span class="keyword">delete</span>删除表中数据保留表结构，<span class="keyword">truncate</span>直接把表删除(<span class="keyword">drop</span>)然后再创建一张新表，执行速度比<span class="keyword">delete</span>快。</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据查询语言DQL"><a href="#数据查询语言DQL" class="headerlink" title="数据查询语言DQL"></a>数据查询语言DQL</h4><p>select语句执行后服务器会按照要求检索表中数据，并将检索结果发送到客户端，这个以表的形式展示出来的临时结果集就是虚拟表，它是存放在内存中，不是在磁盘中的，执行其他操作之后这个结果集就没有了，所以它是临时存在的虚拟表，而不是一个真实的表。</p>
+<p><strong>单表查询</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field2&#x27;</span> <span class="keyword">as</span> <span class="string">&#x27;alias&#x27;</span> <span class="keyword">from</span> <span class="string">&#x27;oritablename&#x27;</span> [<span class="keyword">as</span>] <span class="string">&#x27;alias&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="string">&#x27;field2&#x27;</span> <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">where</span> <span class="string">&#x27;criteria&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">where</span> <span class="string">&#x27;field2&#x27;</span> <span class="keyword">is</span> [<span class="keyword">not</span>] <span class="keyword">null</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">where</span> <span class="string">&#x27;field2&#x27;</span> <span class="keyword">like</span> <span class="string">&#x27;wildcard&#x27;</span>; </span><br><span class="line"># 百分号（<span class="operator">%</span>）通配符：匹配多个字符，可以匹配除了<span class="keyword">null</span>以外的任何值</span><br><span class="line"># 下划线（_）通配符：匹配一个字符</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>[ <span class="keyword">where</span> <span class="string">&#x27;criteria&#x27;</span>] <span class="keyword">group</span> <span class="keyword">by</span> <span class="string">&#x27;groupfield1&#x27;</span>[,<span class="string">&#x27;groupfield2&#x27;</span>,…]; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>[ <span class="keyword">where</span> <span class="string">&#x27;criteria&#x27;</span>][ <span class="keyword">group</span> <span class="keyword">by</span> <span class="string">&#x27;groupfield1&#x27;</span>[,<span class="string">&#x27;groupfield2&#x27;</span>,…]] <span class="keyword">having</span> <span class="string">&#x27;criteria&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="string">&#x27;field1&#x27;</span>[ <span class="string">&#x27;direction&#x27;</span>,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;direction&#x27;</span>,…];</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> limit [<span class="string">&#x27;offsetvalue&#x27;</span>,] <span class="string">&#x27;number&#x27;</span> <span class="operator">|</span> <span class="string">&#x27;number&#x27;</span> <span class="keyword">offset</span> <span class="string">&#x27;offsetvalue&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>多表查询</strong></p>
+<p>表之间关系：一对多，多对多，一对一。</p>
+<p>消除笛卡尔积</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,…] <span class="keyword">from</span> <span class="string">&#x27;table1&#x27;</span>,<span class="string">&#x27;table2&#x27;</span>[,…] <span class="keyword">where</span> <span class="string">&#x27;table1&#x27;</span>.key<span class="operator">=</span><span class="string">&#x27;table2&#x27;</span>.key; </span><br></pre></td></tr></table></figure>
+
+<p>连接查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,…] <span class="keyword">from</span> <span class="string">&#x27;table1&#x27;</span> [<span class="keyword">inner</span>] <span class="keyword">join</span> <span class="string">&#x27;table2&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;table1&#x27;</span>.key<span class="operator">=</span><span class="string">&#x27;table2&#x27;</span>.key;</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,…] <span class="keyword">from</span> <span class="string">&#x27;table1&#x27;</span> <span class="keyword">left</span> <span class="keyword">join</span> <span class="string">&#x27;table2&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;table1&#x27;</span>.key<span class="operator">=</span><span class="string">&#x27;table2&#x27;</span>.key; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,…] <span class="keyword">from</span> <span class="string">&#x27;table1&#x27;</span> <span class="keyword">right</span> <span class="keyword">join</span> <span class="string">&#x27;table2&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;table1&#x27;</span>.key<span class="operator">=</span><span class="string">&#x27;table2&#x27;</span>.key; </span><br></pre></td></tr></table></figure>
+
+<p>联合查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 去重</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"># 不去重</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span> <span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br></pre></td></tr></table></figure>
+
+<p>子查询</p>
+<blockquote>
+<p>标量子查询：返回的结果是一个数据(单行单列)</p>
+<p>行子查询：返回的结果是一行(单行多列)</p>
+<p>列子查询：返回的结果是一列(多行单列)</p>
+<p>表子查询：返回的结果是一张临时表(多行多列)</p>
+<p>常用操作符：IN, ANY, ALL, EXIST</p>
+</blockquote>
+<p><strong>函数</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>函数</th>
+<th>类型</th>
+<th>函数</th>
+<th>类型</th>
+<th>函数</th>
+<th>类型</th>
+<th>函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>聚合</td>
+<td>avg</td>
+<td>数学</td>
+<td>sign</td>
+<td>日期</td>
+<td>date_format</td>
+<td>日期</td>
+<td>time</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>count</td>
+<td>数学</td>
+<td>sqrt</td>
+<td>日期</td>
+<td>from_unixtime</td>
+<td>开窗</td>
+<td>cume_dist</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>max</td>
+<td>字符串</td>
+<td>ascii</td>
+<td>日期</td>
+<td>monthname</td>
+<td>开窗</td>
+<td>dense_rank</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>min</td>
+<td>字符串</td>
+<td>bit_length</td>
+<td>日期</td>
+<td>dayname</td>
+<td>开窗</td>
+<td>first_value</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>sum</td>
+<td>字符串</td>
+<td>concat</td>
+<td>日期</td>
+<td>now</td>
+<td>开窗</td>
+<td>lag</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>abs</td>
+<td>字符串</td>
+<td>concat_ws</td>
+<td>日期</td>
+<td>curdate</td>
+<td>开窗</td>
+<td>last_value</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>bin</td>
+<td>字符串</td>
+<td>insert</td>
+<td>日期</td>
+<td>curtime</td>
+<td>开窗</td>
+<td>lead</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>exp</td>
+<td>字符串</td>
+<td>lcase</td>
+<td>日期</td>
+<td>quarter</td>
+<td>开窗</td>
+<td>nth_value</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>greatest</td>
+<td>字符串</td>
+<td>ucase</td>
+<td>日期</td>
+<td>week</td>
+<td>开窗</td>
+<td>ntile</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>least</td>
+<td>字符串</td>
+<td>left</td>
+<td>日期</td>
+<td>dayofyear</td>
+<td>开窗</td>
+<td>percent_rank</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>ln</td>
+<td>字符串</td>
+<td>right</td>
+<td>日期</td>
+<td>dayofmonth</td>
+<td>开窗</td>
+<td>rank</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>log</td>
+<td>字符串</td>
+<td>length</td>
+<td>日期</td>
+<td>dayofweek</td>
+<td>开窗</td>
+<td>row_number</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>mod</td>
+<td>字符串</td>
+<td>position</td>
+<td>日期</td>
+<td>year</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>pi</td>
+<td>字符串</td>
+<td>quote</td>
+<td>日期</td>
+<td>month</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>rand</td>
+<td>字符串</td>
+<td>repeat</td>
+<td>日期</td>
+<td>day</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>floor</td>
+<td>字符串</td>
+<td>reverse</td>
+<td>日期</td>
+<td>hour</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>ceiling</td>
+<td>字符串</td>
+<td>ltrim</td>
+<td>日期</td>
+<td>minute</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>round</td>
+<td>字符串</td>
+<td>rtrim</td>
+<td>日期</td>
+<td>second</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>truncate</td>
+<td>字符串</td>
+<td>trim</td>
+<td>日期</td>
+<td>date</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>查询结果保存</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;newtablename&#x27;</span> <span class="keyword">as</span> <span class="keyword">select</span> <span class="string">&#x27;query&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;query&#x27;</span> <span class="keyword">into</span> outfile <span class="string">&#x27;savedir&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果报错提示：“The MySQL server is running with the –secure-file-priv option so it cannot execute this statement”，表示数据库不允许存到此路径。<br>运行：show variables like ‘secure<em>file</em>priv’; 查看允许路径，再存到此路径下即可。</p>
+</blockquote>
+<h4 id="数据控制语言DCL"><a href="#数据控制语言DCL" class="headerlink" title="数据控制语言DCL"></a>数据控制语言DCL</h4><p>定义数据库访问权限和安全级别，常用指令：Grant，Revoke。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Neil WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="Neil Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/SQL/" rel="tag"><i class="fa fa-tag"></i> SQL</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/03/5/" rel="prev" title="Markdown数学公式">
+                  <i class="fa fa-chevron-left"></i> Markdown数学公式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/30/7/" rel="next" title="等级保护与分级保护">
+                  等级保护与分级保护 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-copyright"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Neil</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script src="https://embed.widgetpack.com/widget.js" async></script>
+  <script class="next-config" data-name="rating" type="application/json">{"enable":true,"id":null,"color":"#fc6423"}</script>
+  <script src="/js/third-party/rating.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.aidata.ink","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在选择加密算法，面对一大长串的选项时，大家都有这样的疑问，究竟哪种加密方式是最好的呢？ 对于加密方式、算法来说，一般安全性与性能呈负相关，越是安全的，对性能要求则更高。 现在主流的加密协议的安全性均能达到标准，因此这里主要讨论的最好便是加密性能的优良。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常见对称加密算法特性分析">
+<meta property="og:url" content="http://www.aidata.ink/2019/09/20/9/index.html">
+<meta property="og:site_name" content="aiData">
+<meta property="og:description" content="在选择加密算法，面对一大长串的选项时，大家都有这样的疑问，究竟哪种加密方式是最好的呢？ 对于加密方式、算法来说，一般安全性与性能呈负相关，越是安全的，对性能要求则更高。 现在主流的加密协议的安全性均能达到标准，因此这里主要讨论的最好便是加密性能的优良。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-09-20T12:38:32.000Z">
+<meta property="article:modified_time" content="2021-01-30T14:54:48.458Z">
+<meta property="article:author" content="Neil">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.aidata.ink/2019/09/20/9/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://www.aidata.ink/2019/09/20/9/","path":"2019/09/20/9/","title":"常见对称加密算法特性分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>常见对称加密算法特性分析 | aiData</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100963046-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-100963046-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">aiData</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Es Muss Sein!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AEAD"><span class="nav-number">1.</span> <span class="nav-text">AEAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RC4-%E5%8A%A0%E5%AF%86"><span class="nav-number">3.</span> <span class="nav-text">RC4 加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AES-%E5%8A%A0%E5%AF%86"><span class="nav-number">4.</span> <span class="nav-text">AES 加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChaCha-%E5%8A%A0%E5%AF%86"><span class="nav-number">5.</span> <span class="nav-text">ChaCha 加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Neil"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Neil</p>
+  <div class="site-description" itemprop="description">AI/Big Data/Cloud Computing</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/neilkwok" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;neilkwok" rel="noopener" target="_blank"><i class="fab fa-github-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ME@GuoWei.Pub" title="E-Mail → mailto:ME@GuoWei.Pub" rel="noopener" target="_blank"><i class="fas fa-envelope-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCap-z1VLbEwWbfvaQIyR0kA" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCap-z1VLbEwWbfvaQIyR0kA" rel="noopener" target="_blank"><i class="fab fa-youtube-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/neil-kwok/" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;neil-kwok&#x2F;" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://www.aidata.ink/2019/09/20/9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Neil">
+      <meta itemprop="description" content="AI/Big Data/Cloud Computing">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aiData">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          常见对称加密算法特性分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-20 20:38:32" itemprop="dateCreated datePublished" datetime="2019-09-20T20:38:32+08:00">2019-09-20</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在选择加密算法，面对一大长串的选项时，大家都有这样的疑问，究竟哪种加密方式是最好的呢？</p>
+<p>对于加密方式、算法来说，一般安全性与性能呈负相关，越是安全的，对性能要求则更高。</p>
+<p>现在主流的加密协议的安全性均能达到标准，因此这里主要讨论的最好便是加密性能的优良。</p>
+<span id="more"></span>
+
+<p>对于 OpenSSL 而言，有三种常见的加密方式：RC4、AES、ChaCha。</p>
+<p>单看这三种加密方式，都是非常具有代表性，可以说每种都有优缺点。</p>
+<h2 id="AEAD"><a href="#AEAD" class="headerlink" title="AEAD"></a>AEAD</h2><p>在传统的对称加密协议中，最大的缺陷就是没有对数据包完整性进行校验，再加上流加密的特点，导致了攻击者可以通过穷举的方式修改密文进行基于服务器行为的主动探测。</p>
+<p>在通常的密码学应用中，Confidentiality（保密）用加密实现，消息认证用 MAC（Message Authentication Code，消息验证码）实现。这两种算法的配合方式，引发了很多安全漏洞，过去曾经有 3 种方法：</p>
+<blockquote>
+<ol>
+<li>Encrypt-and-MAC (E&amp;M)</li>
+<li>MAC-then-Encrypt (MtE) &lt;- 即 OTA 的做法</li>
+<li>Encrypt-then-MAC (EtM) &lt;- 新协议的做法</li>
+</ol>
+</blockquote>
+<p>然而后来人们发现，E&amp;M 和 MtE 都是有安全问题的，所以 2008 年起， 逐渐提出了「用一个算法在内部同时实现加密和认证」的方法，称为 AEAD (Authenticated Encryption with Associated Data)。在 AEAD 这种概念里，cipher + MAC 的模式被一个 AEAD 算法替换。</p>
+<p>使用了 AEAD 算法的新协议本质上就是更完善的 stream cipher + authentication，虽然它依然使用的是流加密（StreamCipher），但是通过更完善的数据包完整性验证机制杜绝了上面所述的可被篡改密文的可能性。</p>
+<p>目前以下加密方式支持 AEAD 算法：</p>
+<blockquote>
+<ol>
+<li>AES-128-GCM</li>
+<li>AES-192-GCM</li>
+<li>AES-256-GCM</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+</ol>
+</blockquote>
+<p>但如果是用在路由器上，因为很多路由器 CPU 速度都在 500MHz 以下，并且不支持 AES 硬解，因为在路由器等计算能力弱的设备上使用 AES 加密方式会造成性能影响，所以，之前使用在路由器上的加密方式一般都选 ChaCha20 算法或 RC4-MD5 （特别是 MIPS 架构的处理器）。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>支持 AES 指令集情况下：</p>
+<blockquote>
+<ul>
+<li><code>更快（Fast）</code></li>
+</ul>
+<ol>
+<li>RC4-MD5</li>
+<li>AES-256-CFB</li>
+<li>AES-256-GCM</li>
+<li>ChaCha20</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+</ol>
+<ul>
+<li><code>更慢（Slow）</code></li>
+</ul>
+</blockquote>
+<p>不支持 AES 指令集情况下：</p>
+<blockquote>
+<ul>
+<li><code>更快（Fast）</code></li>
+</ul>
+<ol>
+<li>RC4-MD5</li>
+<li>ChaCha20</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+<li>AES-256-CFB</li>
+<li>AES-256-GCM</li>
+</ol>
+<ul>
+<li><code>更慢（Slow）</code></li>
+</ul>
+</blockquote>
+<p>在各类处理器的测试数据：</p>
+<table>
+<thead>
+<tr>
+<th>Chip</th>
+<th>AES-128-GCM 速度</th>
+<th>ChaCha20-Poly1305 速度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OMAP 4460</td>
+<td>24.1 MB/s</td>
+<td>75.3 MB/s</td>
+</tr>
+<tr>
+<td>Snapdragon S4 Pro</td>
+<td>41.5 MB/s</td>
+<td>130.9 MB/s</td>
+</tr>
+<tr>
+<td>Sandy Bridge Xeon (AES-NI)</td>
+<td>900 MB/s</td>
+<td>500 MB/s</td>
+</tr>
+</tbody></table>
+<h2 id="RC4-加密"><a href="#RC4-加密" class="headerlink" title="RC4 加密"></a>RC4 加密</h2><p>速度最快，加密简单易破解，适合内网、低性能设备，推荐使用 RC4-MD5。</p>
+<blockquote>
+<p>RC4-MD5：使用 RC4 加密 MD5 校验。</p>
+</blockquote>
+<h2 id="AES-加密"><a href="#AES-加密" class="headerlink" title="AES 加密"></a>AES 加密</h2><p>块加密算法，兼顾效率和安全，适合在拥有 AES 指令集的 CPU 上，推荐使用 AES-256-GCM 。</p>
+<table>
+<thead>
+<tr>
+<th>区别</th>
+<th>AES-XXX-CFB</th>
+<th>AES-XXX-CTR</th>
+<th>AES-XXX-GCM</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>区别</td>
+<td>仅加密</td>
+<td>仅加密</td>
+<td>加密+消息完整性校验</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>加密可并行</td>
+<td>加密解密均可并行计算</td>
+<td>加密解密均可并行计算</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>解密串行</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>AES-256-CFB：密码反馈模式（Cipher FeedBack Mode），仅加密无完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>AES-256-CTR：计算器模式（Counter Mode），仅加密无完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>AES-256-GCM：伽罗瓦 / 计数器模式（Galois / Counter Mode）支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<h2 id="ChaCha-加密"><a href="#ChaCha-加密" class="headerlink" title="ChaCha 加密"></a>ChaCha 加密</h2><p>新型的流加密算法，兼顾效率和安全，适合在没有 AES 指令集的 CPU 上，效率比 AES 高，推荐使用 XChaCha20-IETF-Poly1305 。</p>
+<blockquote>
+<p>ChaCha20：Salsa20 算法的改良，仅加密无完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>ChaCha20-IETF-Poly1305：支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>XChaCha20-IETF-Poly1305：是前者的升级版，拥有更大的随机数以防碰撞攻击，支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在具备 AES 加速的 CPU（例如桌面、服务器）上，建议使用 AES-256-GCM 系列。</p>
+<p>在移动设备（例如手机、路由器等非 x86 架构的 CPU）上则建议使用 ChaCha20-IETF-Poly1305 系列。</p>
+<p>如果你是在内网（LAN 或 IPLC 线路）使用，则不必过多担心安全性问题，RC4-MD5 加密协议将是非常节省性能的选择。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Neil WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="Neil Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/10/8/" rel="prev" title="IDC机房建设标准">
+                  <i class="fa fa-chevron-left"></i> IDC机房建设标准
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/01/02/10/" rel="next" title="常用系统性能估算方法">
+                  常用系统性能估算方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-copyright"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Neil</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script src="https://embed.widgetpack.com/widget.js" async></script>
+  <script class="next-config" data-name="rating" type="application/json">{"enable":true,"id":null,"color":"#fc6423"}</script>
+  <script src="/js/third-party/rating.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

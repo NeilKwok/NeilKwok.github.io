@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.aidata.ink","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="由于在信息化系统设计阶段会经常遇到系统配置多少服务器的问题，在此提供常用的服务器性能估算方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用系统性能估算方法">
+<meta property="og:url" content="http://www.aidata.ink/2020/01/02/10/index.html">
+<meta property="og:site_name" content="aiData">
+<meta property="og:description" content="由于在信息化系统设计阶段会经常遇到系统配置多少服务器的问题，在此提供常用的服务器性能估算方式。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-02T13:18:36.000Z">
+<meta property="article:modified_time" content="2021-01-30T14:51:09.646Z">
+<meta property="article:author" content="Neil">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.aidata.ink/2020/01/02/10/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://www.aidata.ink/2020/01/02/10/","path":"2020/01/02/10/","title":"常用系统性能估算方法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>常用系统性能估算方法 | aiData</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-100963046-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-100963046-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">aiData</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Es Muss Sein!</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E5%9D%87%E5%B9%B6%E5%8F%91%E7%94%A8%E6%88%B7%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">平均并发用户数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E7%94%A8%E6%88%B7%E6%95%B0%E5%B3%B0%E5%80%BC%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">并发用户数峰值：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E6%95%B0%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">请求数计算公式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%9E%E5%90%90%E9%87%8F%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">吞吐量计算公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TPS%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">TPS计算公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">例子：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Neil"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Neil</p>
+  <div class="site-description" itemprop="description">AI/Big Data/Cloud Computing</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/neilkwok" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;neilkwok" rel="noopener" target="_blank"><i class="fab fa-github-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:ME@GuoWei.Pub" title="E-Mail → mailto:ME@GuoWei.Pub" rel="noopener" target="_blank"><i class="fas fa-envelope-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.youtube.com/channel/UCap-z1VLbEwWbfvaQIyR0kA" title="YouTube → https:&#x2F;&#x2F;www.youtube.com&#x2F;channel&#x2F;UCap-z1VLbEwWbfvaQIyR0kA" rel="noopener" target="_blank"><i class="fab fa-youtube-square fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/neil-kwok/" title="LinkedIn → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;neil-kwok&#x2F;" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://www.aidata.ink/2020/01/02/10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Neil">
+      <meta itemprop="description" content="AI/Big Data/Cloud Computing">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aiData">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          常用系统性能估算方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-01-02 21:18:36" itemprop="dateCreated datePublished" datetime="2020-01-02T21:18:36+08:00">2020-01-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>由于在信息化系统设计阶段会经常遇到系统配置多少服务器的问题，在此提供常用的服务器性能估算方式。</p>
+<span id="more"></span>
+<h2 id="平均并发用户数"><a href="#平均并发用户数" class="headerlink" title="平均并发用户数"></a>平均并发用户数</h2><p>$$C = nL/T$$</p>
+<p>其中</p>
+<blockquote>
+<p>C：平均的并发用户数；</p>
+</blockquote>
+<blockquote>
+<p>n：平均每天访问用户数（login session的数量）；</p>
+</blockquote>
+<blockquote>
+<p>L：一天内用户从登录到退出的平均时间（login session的平均长度）；</p>
+</blockquote>
+<blockquote>
+<p>T：考察的时间段长度（一天内多长时间有用户使用系统）；</p>
+</blockquote>
+<h2 id="并发用户数峰值："><a href="#并发用户数峰值：" class="headerlink" title="并发用户数峰值："></a>并发用户数峰值：</h2><p>$$C’≈C+3\sqrt[]{C}$$</p>
+<p>其中</p>
+<blockquote>
+<p>C：公式1中的平均并发用户数；</p>
+</blockquote>
+<h2 id="请求数计算公式："><a href="#请求数计算公式：" class="headerlink" title="请求数计算公式："></a>请求数计算公式：</h2><p>$$R = T / TS$$</p>
+<p>其中</p>
+<blockquote>
+<p>R：每个虚拟用户发出的请求数；</p>
+</blockquote>
+<blockquote>
+<p>T：性能测试所用的时间；</p>
+</blockquote>
+<blockquote>
+<p>TS：思考时间；</p>
+</blockquote>
+<h2 id="吞吐量计算公式"><a href="#吞吐量计算公式" class="headerlink" title="吞吐量计算公式"></a>吞吐量计算公式</h2><p>$$F=VU\times R / T$$</p>
+<p>其中</p>
+<blockquote>
+<p>F：吞吐量；</p>
+</blockquote>
+<blockquote>
+<p>VU：虚拟用户个数；</p>
+</blockquote>
+<blockquote>
+<p>R：每个虚拟用户发出的请求数；</p>
+</blockquote>
+<blockquote>
+<p>T：性能测试所用的时间；</p>
+</blockquote>
+<h2 id="TPS计算公式"><a href="#TPS计算公式" class="headerlink" title="TPS计算公式"></a>TPS计算公式</h2><p>$$TPS = 并发数/平均响应时间$$</p>
+<p>在现实世界里，登陆的用户是按照以下的方式运作的：</p>
+<blockquote>
+<ol>
+<li>沉睡状态 – 在非工作时间不登陆；</li>
+<li>片刻状态（上升） – 开始工作的时候，人们开始登录系统；在线的数量不断增加；</li>
+<li>稳定期 – 在线的用户数保持稳定；</li>
+<li>片刻状态（回落） – 工作时间结束；人们退出系统；在线人数减少；</li>
+</ol>
+</blockquote>
+<p>这四个状态周而复始。</p>
+<p>我们要更精确预估高峰期并发用户数，应该遵循下面的步骤：</p>
+<blockquote>
+<ol>
+<li>根据经验来估计稳定期的时间段；</li>
+<li>估计在稳定期的登录用户数；</li>
+<li>根据公式计算平均并发用户数；</li>
+<li>运用公式计算高峰并发用户数；</li>
+</ol>
+</blockquote>
+<h2 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h2><p>市政府准备为了其170000名员工运行一个薪酬系统，员工可以通过此系统查询自己的薪酬信息。由于IT技能的差异、电脑的资源有限以及其他种种的原因，预计到系统上线只有50%的员工会定期使用该系统。这些员工中的70%会在每个月的最后一周使用系统一次。据观测，参与了用户接受度测试的员工们平均使用这个系统的时间是5分钟。</p>
+<blockquote>
+<p>n = 170000<em>0.5</em>0.7/5 = 11900</p>
+</blockquote>
+<blockquote>
+<p>L = 5分钟</p>
+</blockquote>
+<blockquote>
+<p>T = 8小时 = 480分钟</p>
+</blockquote>
+<p>平均并发用户数：</p>
+<p>$$C = nL/T = 11900\times 5/480 = 124$$</p>
+<p>补充条件：<br>假设80%的员工进入薪酬系统的时间是上午9：30到12:30以及下午2:30到4:30这5个小时，尽管一天工作时间是8小时，并且在这5小时之间登录数保持稳定。</p>
+<blockquote>
+<p>T = 5小时 = 300分钟</p>
+</blockquote>
+<blockquote>
+<p>n = 11900*0.8 = 9520</p>
+</blockquote>
+<blockquote>
+<p>L = 5分钟</p>
+</blockquote>
+<p>平均并发用户数：</p>
+<p>$$C = nL/T = 9520\times 5/300 = 159$$</p>
+<p>高峰并发用户数：<br>$$C’≈C+3\times \sqrt[]{C} = 196$$</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="Neil WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="Neil Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/20/9/" rel="prev" title="常见对称加密算法特性分析">
+                  <i class="fa fa-chevron-left"></i> 常见对称加密算法特性分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-copyright"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Neil</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script src="https://embed.widgetpack.com/widget.js" async></script>
+  <script class="next-config" data-name="rating" type="application/json">{"enable":true,"id":null,"color":"#fc6423"}</script>
+  <script src="/js/third-party/rating.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

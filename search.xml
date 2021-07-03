@@ -1,0 +1,1904 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>从建站开始说起</title>
+    <url>/2016/01/02/1/</url>
+    <content><![CDATA[<p>很久之前就想建立一个网站记录自己的学习生活。其实前段时间学习了很多种建站的方法，并且都尝试成功，只是可惜没有坚持写内容。希望从这篇开始可以一直坚持下去。这篇先分享一下建站的过程。</p>
+<span id="more"></span>
+
+<p>目前我已经使用过建站的方法有下面几种：</p>
+<ol>
+<li><p>在<code>LNMP</code>(<code>Linux</code>+<code>Nginx</code>+<code>MySQL</code>+<code>Php</code>)环境下，使用<code>Wordpress</code>建站。</p>
+<blockquote>
+<p>Nginx是著名的Web服务器，目前大量企业在使用，同时也可以作为反向代理服务器。作为目前最火的两大Web服务器之一，它灵活小巧，性能强大。</p>
+<p>Wordpress是用Php语言编写的CMS程序，一般多用于博客，公司产品介绍等类型网站。建立网站非常简单快捷，只需要简单配置就可以开始内容创作，有功能丰富的管理界面，还有丰富的网站模板以及各种插件实现各种功能。</p>
+</blockquote>
+</li>
+<li><p>使用<code>Hexo</code>建立静态博客，并挂载到<code>Github Pages</code>和<code>Coding Pages</code>。</p>
+<blockquote>
+<p>Github Pages是Github的免费服务，但是只支持静态页面。</p>
+</blockquote>
+</li>
+<li><p>使用Django建站。</p>
+</li>
+</ol>
+<p>由于科学上网的需要，去年租了一个VPS，因为梯子占用资源很少，为了不浪费，同时用Wordpress建了一个站，不过由于连接速度问题，一到晚上就龟速，之后就一直没管了，哈哈。因为我的需求只是写写日记，Github又提供了免费的空间，所以简单便捷而且还稳定的Hexo就是首选。</p>
+<p>以下就先介绍Hexo建站的方法。</p>
+<h3 id="域名准备"><a href="#域名准备" class="headerlink" title="域名准备"></a>域名准备</h3><p>要弄一个自己的网站首先要有一个有自己特色的自定义域名。.com/.cn是常用的域名，一般价格都比较贵，自己折腾显然不适合。ICANN发布了很多新的域名，比如.top/.cc/.club等，这些就相对便宜很多，最便宜一年10块就搞定了，但是缺点就是一年过后再续费就贵好多倍了，所以如果几年之内不打算换域名的话，建议直接买10年的，最便宜300块左右吧，比每年续费便宜的多的多。</p>
+<p>购买网站有很多，国内万网，国外Godaddy，我是在万网上买的，没具体对比过价格，感觉差不多。</p>
+<p>域名买好后就要选择域名解析商了，我这里推荐用DNSpod。首先先注册DNSpod，查看DNSpod的域名服务器。然后去买域名的网站上设置解析服务器。这样就设置好了解析，剩下的就是建好网站后再添加解析记录了。</p>
+<h3 id="Github配置"><a href="#Github配置" class="headerlink" title="Github配置"></a>Github配置</h3><p><code>Github</code>又称Gayhub，世界最大的同性交友网站…不对，是代码托管网站…</p>
+<p>注册好之后要先建立一个Pages项目得到项目仓库的地址。</p>
+<p>然后电脑上下载安装<a href="https://git-scm.com/">Git</a>程序，安装完成后打开<code>Git Bash</code>，输入命令（邮箱地址任意）建立ssh密钥：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">&quot;your_email@example.com&quot;</span></span><br><span class="line"><span class="comment"># Creates a new ssh key using the provided email</span></span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/your_home_path/.ssh/id_rsa):</span><br></pre></td></tr></table></figure>
+
+<p>使用记事本打开新创建的公钥文件<code>id_rsa.pub</code> 并复制所有内容，然后进入Github设置页面，将复制的内容粘贴在SSH Keys中。到现在就可以在桌面端通过Git自由地访问Github远程仓库了。</p>
+<h3 id="安装配置Hexo"><a href="#安装配置Hexo" class="headerlink" title="安装配置Hexo"></a>安装配置Hexo</h3><p>关于最新版Hexo的说明见<a href="https://hexo.io/zh-cn/docs/">官网</a>。</p>
+<p><code>Hexo</code>主要是在本地配置，每次更新博客内容后通过本地编译，将文件通过Git指令推送到远程仓库。</p>
+<p>首先需要安装<a href="https://nodejs.org/en/">node.js</a>，安装时一定要选择加入环境变量，否则自己手动设置就很麻烦。安装完成后打开Git Bash安装Hexo：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>建立网站目录：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init &lt;folder&gt;</span><br><span class="line">$ <span class="built_in">cd</span> &lt;folder&gt;</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+
+<p>然后在目录下就生成了网站的文件。打开_config.yml文件对网站进行基本设置，比如网站名，动态效果，目录啊什么的，其中最重要的是最后的部分Deploy，配置远程仓库地址：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https:<span class="comment">//hexo.io/docs/deployment.html</span></span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: </span><br><span class="line">        github: git@github.com: &lt;Your Repo&gt;</span><br><span class="line">  #branch: master</span><br></pre></td></tr></table></figure>
+
+<p>配置好之后就可以开心地使用Hexo了，可以去官网下载主题，对网站进行各种设置。配置文件中有具体说明，可以自由发挥~</p>
+<p>配置好之后可以本地查看效果：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g 		// 网站的任何修改，包括更改设置、更新博客等，都需要操作一次。</span><br><span class="line">$ hexo s		// 运行本地服务器，可以打开浏览器访问127.0.0.1:4000查看具体效果。</span><br></pre></td></tr></table></figure>
+
+<p>现在就可以建立第一篇博客：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&#x27;Your first blog&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>新文件就生成在网站source/post目录中：Your first blog.md，博客使用markdown语法编写，推荐使用Typora进行编辑。写完博客后在本地看一下效果后就可以推送到Github上了：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g 		// 网站的任何修改，包括更改设置、更新博客等，都需要操作一次。</span><br><span class="line">$ hexo s		// 运行本地服务器，可以打开浏览器访问127.0.0.1:4000查看具体效果。</span><br><span class="line">$ hexo d		// 远程部署</span><br></pre></td></tr></table></figure>
+
+<h3 id="访问网站与域名绑定"><a href="#访问网站与域名绑定" class="headerlink" title="访问网站与域名绑定"></a>访问网站与域名绑定</h3><p>到Github项目页面上，找到项目设置，在设置中设置Pages的二级域名。然后访问这个二级域名验证是否能成功打开自己的网站。</p>
+<p>如果想要用自己的域名访问Github Pages的话就需要在域名解析服务商添加CNAME记录。添加记录后过一段时间就可以用自己的域名访问了。</p>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>建站</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常用系统性能估算方法</title>
+    <url>/2020/01/02/10/</url>
+    <content><![CDATA[<p>由于在信息化系统设计阶段会经常遇到系统配置多少服务器的问题，在此提供常用的服务器性能估算方式。</p>
+<span id="more"></span>
+<h2 id="平均并发用户数"><a href="#平均并发用户数" class="headerlink" title="平均并发用户数"></a>平均并发用户数</h2><p>$$C = nL/T$$</p>
+<p>其中</p>
+<blockquote>
+<p>C：平均的并发用户数；</p>
+</blockquote>
+<blockquote>
+<p>n：平均每天访问用户数（login session的数量）；</p>
+</blockquote>
+<blockquote>
+<p>L：一天内用户从登录到退出的平均时间（login session的平均长度）；</p>
+</blockquote>
+<blockquote>
+<p>T：考察的时间段长度（一天内多长时间有用户使用系统）；</p>
+</blockquote>
+<h2 id="并发用户数峰值："><a href="#并发用户数峰值：" class="headerlink" title="并发用户数峰值："></a>并发用户数峰值：</h2><p>$$C’≈C+3\sqrt[]{C}$$</p>
+<p>其中</p>
+<blockquote>
+<p>C：公式1中的平均并发用户数；</p>
+</blockquote>
+<h2 id="请求数计算公式："><a href="#请求数计算公式：" class="headerlink" title="请求数计算公式："></a>请求数计算公式：</h2><p>$$R = T / TS$$</p>
+<p>其中</p>
+<blockquote>
+<p>R：每个虚拟用户发出的请求数；</p>
+</blockquote>
+<blockquote>
+<p>T：性能测试所用的时间；</p>
+</blockquote>
+<blockquote>
+<p>TS：思考时间；</p>
+</blockquote>
+<h2 id="吞吐量计算公式"><a href="#吞吐量计算公式" class="headerlink" title="吞吐量计算公式"></a>吞吐量计算公式</h2><p>$$F=VU\times R / T$$</p>
+<p>其中</p>
+<blockquote>
+<p>F：吞吐量；</p>
+</blockquote>
+<blockquote>
+<p>VU：虚拟用户个数；</p>
+</blockquote>
+<blockquote>
+<p>R：每个虚拟用户发出的请求数；</p>
+</blockquote>
+<blockquote>
+<p>T：性能测试所用的时间；</p>
+</blockquote>
+<h2 id="TPS计算公式"><a href="#TPS计算公式" class="headerlink" title="TPS计算公式"></a>TPS计算公式</h2><p>$$TPS = 并发数/平均响应时间$$</p>
+<p>在现实世界里，登陆的用户是按照以下的方式运作的：</p>
+<blockquote>
+<ol>
+<li>沉睡状态 – 在非工作时间不登陆；</li>
+<li>片刻状态（上升） – 开始工作的时候，人们开始登录系统；在线的数量不断增加；</li>
+<li>稳定期 – 在线的用户数保持稳定；</li>
+<li>片刻状态（回落） – 工作时间结束；人们退出系统；在线人数减少；</li>
+</ol>
+</blockquote>
+<p>这四个状态周而复始。</p>
+<p>我们要更精确预估高峰期并发用户数，应该遵循下面的步骤：</p>
+<blockquote>
+<ol>
+<li>根据经验来估计稳定期的时间段；</li>
+<li>估计在稳定期的登录用户数；</li>
+<li>根据公式计算平均并发用户数；</li>
+<li>运用公式计算高峰并发用户数；</li>
+</ol>
+</blockquote>
+<h2 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h2><p>市政府准备为了其170000名员工运行一个薪酬系统，员工可以通过此系统查询自己的薪酬信息。由于IT技能的差异、电脑的资源有限以及其他种种的原因，预计到系统上线只有50%的员工会定期使用该系统。这些员工中的70%会在每个月的最后一周使用系统一次。据观测，参与了用户接受度测试的员工们平均使用这个系统的时间是5分钟。</p>
+<blockquote>
+<p>n = 170000<em>0.5</em>0.7/5 = 11900</p>
+</blockquote>
+<blockquote>
+<p>L = 5分钟</p>
+</blockquote>
+<blockquote>
+<p>T = 8小时 = 480分钟</p>
+</blockquote>
+<p>平均并发用户数：</p>
+<p>$$C = nL/T = 11900\times 5/480 = 124$$</p>
+<p>补充条件：<br>假设80%的员工进入薪酬系统的时间是上午9：30到12:30以及下午2:30到4:30这5个小时，尽管一天工作时间是8小时，并且在这5小时之间登录数保持稳定。</p>
+<blockquote>
+<p>T = 5小时 = 300分钟</p>
+</blockquote>
+<blockquote>
+<p>n = 11900*0.8 = 9520</p>
+</blockquote>
+<blockquote>
+<p>L = 5分钟</p>
+</blockquote>
+<p>平均并发用户数：</p>
+<p>$$C = nL/T = 9520\times 5/300 = 159$$</p>
+<p>高峰并发用户数：<br>$$C’≈C+3\times \sqrt[]{C} = 196$$</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>使用Markdown进行写作</title>
+    <url>/2016/02/23/2/</url>
+    <content><![CDATA[<p>自从接触了<code>Markdown</code>之后就停不下来了，越来越多的网站和工具开始支持，平时即使用习惯了Word也对Markdown爱不释手。</p>
+<span id="more"></span>
+
+<h3 id="编辑工具推荐"><a href="#编辑工具推荐" class="headerlink" title="编辑工具推荐"></a>编辑工具推荐</h3><p>Markdown编辑工具有很多，如果对语法比较熟悉的话，一个记事本就可以开始你的写作之旅了。如果想要更好的排版与互动体验，就需要更专业的工具，让写作成为一件享受的事情。</p>
+<p>我使用了很多Markdown编辑器，对比来对比去，最终还是觉得<code>Atom</code>和<code>Typora</code>的体验最好。</p>
+<p>最终选择的<code>Typora</code>作为主力编辑器。</p>
+<h3 id="Markdown语法"><a href="#Markdown语法" class="headerlink" title="Markdown语法"></a>Markdown语法</h3><p>Markdown语法很简单，基本简单看一下文档就可以开始实战了。以下搬运文档，方便速查。</p>
+<p>Markdown语法主要分为如下几大部分：<br><strong>标题</strong>，<strong>段落</strong>，<strong>区块引用</strong>，<strong>代码区块</strong>，<strong>强调</strong>，<strong>列表</strong>，<strong>分割线</strong>，<strong>链接</strong>，<strong>图片</strong>，**反斜杠 <code>\</code><strong>，</strong>符号’`’**。</p>
+<h4 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h4><p>两种形式：<br>1）使用<code>=</code>和<code>-</code>标记一级和二级标题。</p>
+<blockquote>
+<p>一级标题<br><code>=========</code><br>二级标题<br><code>---------</code></p>
+</blockquote>
+<p>效果：</p>
+<blockquote>
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题   "></a>一级标题   </h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2></blockquote>
+<p>2）使用<code>#</code>，可表示1-6级标题。</p>
+<blockquote>
+<p># 一级标题<br>## 二级标题<br>### 三级标题<br>#### 四级标题<br>##### 五级标题<br>###### 六级标题    </p>
+</blockquote>
+<p>效果：</p>
+<blockquote>
+<h1 id="一级标题-1"><a href="#一级标题-1" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题-1"><a href="#二级标题-1" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6></blockquote>
+<h4 id="段落"><a href="#段落" class="headerlink" title="段落"></a>段落</h4><p>段落的前后要有空行，所谓的空行是指没有文字内容。若想在段内强制换行的方式是使用<strong>两个以上</strong>空格加上回车（引用中换行省略回车）。</p>
+<h4 id="区块引用"><a href="#区块引用" class="headerlink" title="区块引用"></a>区块引用</h4><p>在段落的每行或者只在第一行使用符号<code>&gt;</code>,还可使用多个嵌套引用，如：</p>
+<blockquote>
+<p>&gt; 区块引用<br>&gt;&gt; 嵌套引用  </p>
+</blockquote>
+<p>效果：</p>
+<blockquote>
+<p>区块引用  </p>
+<blockquote>
+<p>嵌套引用</p>
+</blockquote>
+</blockquote>
+<h4 id="代码区块"><a href="#代码区块" class="headerlink" title="代码区块"></a>代码区块</h4><p>代码区块的建立是在每行加上4个空格或者一个制表符（如同写代码一样）。如<br>普通段落：</p>
+<p>void main()<br>{<br>    printf(“Hello, Markdown.”);<br>}    </p>
+<p>代码区块：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello, Markdown.&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>:需要和普通段落之间存在空行。</p>
+<h4 id="强调"><a href="#强调" class="headerlink" title="强调"></a>强调</h4><p>在强调内容两侧分别加上<code>*</code>或者<code>_</code>，如：</p>
+<blockquote>
+<p>*斜体*，_斜体_<br>**粗体**，__粗体__</p>
+</blockquote>
+<p>效果：</p>
+<blockquote>
+<p><em>斜体</em>，<em>斜体</em><br><strong>粗体</strong>，<strong>粗体</strong></p>
+</blockquote>
+<h4 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h4><p>使用<code>·</code>、<code>+</code>、或<code>-</code>标记无序列表，如：</p>
+<blockquote>
+<p>-（+*） 第一项<br>-（+*） 第二项<br>- （+*）第三项</p>
+</blockquote>
+<p><strong>注意</strong>：标记后面最少有一个_空格_或_制表符_。若不在引用区块中，必须和前方段落之间存在空行。</p>
+<p>效果：</p>
+<blockquote>
+<ul>
+<li>第一项</li>
+<li>第二项</li>
+<li>第三项</li>
+</ul>
+</blockquote>
+<p>有序列表的标记方式是将上述的符号换成数字,并辅以<code>.</code>，如：</p>
+<blockquote>
+<p>1 . 第一项<br>2 . 第二项<br>3 . 第三项    </p>
+</blockquote>
+<p>效果：</p>
+<blockquote>
+<ol>
+<li>第一项</li>
+<li>第二项</li>
+<li>第三项</li>
+</ol>
+</blockquote>
+<h4 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h4><p>分割线最常使用就是三个或以上<code>*</code>，还可以使用<code>-</code>和<code>_</code>。</p>
+<h4 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h4><p>链接可以由两种形式生成：<strong>行内式</strong>和<strong>参考式</strong>。<br><strong>行内式</strong>：</p>
+<blockquote>
+<p>[aiData](<a href="https://www.aidata.ink/">https://www.aiData.ink</a> “aiData”)。</p>
+</blockquote>
+<p>效果：</p>
+<blockquote>
+<p><a href="https://www.aidata.ink/" title="aiData">aiData</a>。</p>
+</blockquote>
+<p><strong>参考式</strong>：</p>
+<blockquote>
+<p>[aiData link1][1]<br>[aiData link2][2]<br>[1]:<a href="https://www.aidata.ink/">https://www.aiData.ink</a> “aiData”<br>[2]:<a href="https://www.aidata.ink/">https://www.aiData.ink</a> “aiData”</p>
+</blockquote>
+<p>效果：</p>
+<blockquote>
+<p><a href="https://www.aidata.ink/" title="aiData">aiData link1</a><br><a href="https://www.aidata.ink/" title="aiData">aiData link2</a></p>
+</blockquote>
+<p><strong>注意</strong>：上述的<code>[1]:https://www.aiData.ink &quot;aiData&quot;</code>不出现在区块中。</p>
+<h4 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h4><p>添加图片的形式和链接相似，只需在链接的基础上前方加一个<code>！</code>。</p>
+<h4 id="反斜杠"><a href="#反斜杠" class="headerlink" title="反斜杠\"></a>反斜杠<code>\</code></h4><p>相当于<strong>反转义</strong>作用。使符号成为普通符号。</p>
+<h4 id="符号’-’"><a href="#符号’-’" class="headerlink" title="符号’`’"></a>符号’`’</h4><p>起到标记作用。如：</p>
+<blockquote>
+<p>`ctrl+a`</p>
+</blockquote>
+<p>效果：</p>
+<blockquote>
+<p><code>ctrl+a</code>    </p>
+</blockquote>
+<h4 id="其它："><a href="#其它：" class="headerlink" title="其它："></a>其它：</h4><p>列表的使用(非traditonal markdown)：</p>
+<p>用<code>|</code>表示表格纵向边界，表头和表内容用<code>-</code>隔开，并可用<code>:</code>进行对齐设置，两边都有<code>:</code>则表示居中，若不加<code>:</code>则默认左对齐。</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Excel笔记</title>
+    <url>/2019/03/28/4/</url>
+    <content><![CDATA[<p>尽管<code>Python</code>在数据分析领域的应用越来越广泛，但是<code>Excel</code>作为基础的数据分析工具由于各种便利性还是无法替代。尤其在数据清洗过程中，Excel的效率非常高。即使在日常生活中，也是一大效率神器。</p>
+<span id="more"></span>
+
+<h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><p>一个Excel文件叫做工作簿，工作簿内可以建立多个工作表，每个工作表最多可容纳$ 2^{20} $行，$2^{14}$列。</p>
+<p><strong>单元格地址</strong>由行标和列标构成，<strong>区域地址</strong>使用左上角和右下角的单元格地址中间加冒号组成，如<code>A1:B5</code>。</p>
+<p>在连续的数据区域里，可以使用<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&#8595;</kbd>/<kbd>&#8594;</kbd>来快速选取全部的数据区域。</p>
+<p>Excel<strong>数据格式</strong>包括：数值，文本，逻辑值，错误值。</p>
+<h3 id="基本技巧"><a href="#基本技巧" class="headerlink" title="基本技巧"></a>基本技巧</h3><p>使用<strong>定位条件</strong>快速选择特定条件区域。</p>
+<p><strong>选择性粘贴</strong>功能，可以在粘贴的同时对数据进行操作。运算/链接的图片/跳过空单元格/转置。</p>
+<p><strong>查找</strong>功能选择特定格式的单元格，可以选择单元格匹配。</p>
+<p><strong>填充柄</strong>功能：拖拽，双击。批量输入数据。</p>
+<p><strong>组合键列表</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="center">按键</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><kbd>Ctrl</kbd></td>
+<td align="center">多重选取</td>
+</tr>
+<tr>
+<td align="center"><kbd>Shift</kbd></td>
+<td align="center">首尾范围选取</td>
+</tr>
+<tr>
+<td align="center"><kbd>F8</kbd></td>
+<td align="center">扩展模式</td>
+</tr>
+<tr>
+<td align="center"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&#8595;</kbd>/<kbd>&#8594;</kbd></td>
+<td align="center">快速选择数据区域</td>
+</tr>
+<tr>
+<td align="center"><kbd>Shift</kbd>+<kbd>Home</kbd></td>
+<td align="center">边界扩展-行首</td>
+</tr>
+<tr>
+<td align="center"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Home</kbd></td>
+<td align="center">边界扩展-表首</td>
+</tr>
+<tr>
+<td align="center"><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>End</kbd></td>
+<td align="center">边界扩展-最后一个使用中的单元格</td>
+</tr>
+<tr>
+<td align="center"><kbd>Ctrl</kbd>+<kbd>A</kbd></td>
+<td align="center">当前区域选取</td>
+</tr>
+<tr>
+<td align="center"><kbd>Alt</kbd>+<kbd>;</kbd></td>
+<td align="center">选取可见单元格</td>
+</tr>
+<tr>
+<td align="center"><kbd>F5</kbd></td>
+<td align="center">条件定位</td>
+</tr>
+<tr>
+<td align="center"><kbd>Alt</kbd>+<kbd>=</kbd></td>
+<td align="center">快速汇总</td>
+</tr>
+<tr>
+<td align="center"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></td>
+<td align="center">快速填充</td>
+</tr>
+</tbody></table>
+<p><strong>设置工作簿保护</strong>：保护工作表/保护工作簿/部分单元格编辑部分保护。</p>
+<p><strong>打印设置</strong>：顶端标题/网格线/所有有数据的工作表</p>
+<h3 id="数据收集与清洗"><a href="#数据收集与清洗" class="headerlink" title="数据收集与清洗"></a>数据收集与清洗</h3><p>填充柄快捷菜单/文本记忆式</p>
+<p>自定义数据序列</p>
+<p>文本转换数字：四则运算，Value()，–</p>
+<p>自定义数据格式：</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">组成一</td>
+<td align="center">正数格式;负数格式;零格式;文本格式</td>
+</tr>
+<tr>
+<td align="center">组成二</td>
+<td align="center">大于条件值;小于条件值;等于条件值;文本</td>
+</tr>
+</tbody></table>
+<p>分列/合并计算</p>
+<p>设置单元格输入范围/数据验证</p>
+<h3 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h3><p>单元格地址引用：绝对引用/相对引用/混合引用，使用<kbd>F4</kbd>切换。</p>
+<p>跨工作簿/跨表格引用。</p>
+<p>自动/手动重新计算公式。</p>
+<p>公式求值/<kbd>F9</kbd>/公式审核-显示公式</p>
+<p>常用公式：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>函数</th>
+<th>类别</th>
+<th>函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数学</td>
+<td>INT</td>
+<td>文本</td>
+<td>MID</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>MOD</td>
+<td>文本</td>
+<td>LEFT</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>ROUND</td>
+<td>文本</td>
+<td>RIGHT</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>ABS</td>
+<td>文本</td>
+<td>LEN</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>SQRT</td>
+<td>文本</td>
+<td>TEXT</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>RAND</td>
+<td>文本</td>
+<td>REPT</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>RANDBETWEEN</td>
+<td>文本</td>
+<td>REPLACE</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>MAX</td>
+<td>文本</td>
+<td>SUBSITUTE</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>MIN</td>
+<td>文本</td>
+<td>FIND</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>SUM</td>
+<td>逻辑</td>
+<td>IF</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>COUNT</td>
+<td>逻辑</td>
+<td>AND</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>COUNTA</td>
+<td>逻辑</td>
+<td>OR</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>AVERAGE</td>
+<td>逻辑</td>
+<td>NOT</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>COUNTIF</td>
+<td>查找引用</td>
+<td>VLOOKUP</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>SUMIF</td>
+<td>查找引用</td>
+<td>OFFSET</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>AVERAGEIF</td>
+<td>查找引用</td>
+<td>INDEX</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>COUNTIFS</td>
+<td>查找引用</td>
+<td>MATCH</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>SUMIFS</td>
+<td>查找引用</td>
+<td>INDIRECT</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>AVERAGEIFS</td>
+<td>查找引用</td>
+<td>ROW</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>FREQUENCY</td>
+<td>查找引用</td>
+<td>COLUMN</td>
+</tr>
+<tr>
+<td>统计</td>
+<td>RANK</td>
+<td>查找引用</td>
+<td>HLOOKUP</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>YEAR</td>
+<td>查找引用</td>
+<td>LOOKUP</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>MONTH</td>
+<td>时间</td>
+<td>DATEDIF</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>DAY</td>
+<td>时间</td>
+<td>WEEKDAY</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>TODAY</td>
+<td>时间</td>
+<td>WORKDAY</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>DATE</td>
+<td>时间</td>
+<td>EDATE</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>NOW</td>
+<td>时间</td>
+<td>EMONTH</td>
+</tr>
+</tbody></table>
+<p>DATEDIF函数</p>
+<table>
+<thead>
+<tr>
+<th>起始日期</th>
+<th>结束日期</th>
+<th>差</th>
+<th>公式</th>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2010/8/1</td>
+<td>2012/2/4</td>
+<td>1</td>
+<td>=DATEDIF(A2,B2,”Y”)</td>
+<td>Y</td>
+<td>相差年数</td>
+</tr>
+<tr>
+<td>2010/8/1</td>
+<td>2012/2/4</td>
+<td>18</td>
+<td>=DATEDIF(A3,B3,”M”)</td>
+<td>M</td>
+<td>相差总月数</td>
+</tr>
+<tr>
+<td>2010/8/1</td>
+<td>2012/2/4</td>
+<td>6</td>
+<td>=DATEDIF(A4,B4,”YM”)</td>
+<td>YM</td>
+<td>一年内相差月数</td>
+</tr>
+<tr>
+<td>2010/8/1</td>
+<td>2012/2/4</td>
+<td>552</td>
+<td>=DATEDIF(A5,B5,”D”)</td>
+<td>D</td>
+<td>相差总天数</td>
+</tr>
+<tr>
+<td>2010/8/1</td>
+<td>2012/2/4</td>
+<td>187</td>
+<td>=DATEDIF(A6,B6,”YD”)</td>
+<td>YD</td>
+<td>一年内相差天数</td>
+</tr>
+<tr>
+<td>2010/8/1</td>
+<td>2012/2/4</td>
+<td>3</td>
+<td>=DATEDIF(A7,B7,”MD”)</td>
+<td>MD</td>
+<td>一月内相差天数</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>Excel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在Hexo中嵌入动态图表Echarts和Google Charts</title>
+    <url>/2019/03/01/3/</url>
+    <content><![CDATA[<p>最近学习了<code>PowerBI</code>和<code>Tableau</code>，但是这两个平台如果没有购买服务就无法在网页上显示出来，更别说嵌入到自己网站中。网页端的动态图表有很多，最近研究了一下<code>Echarts</code>和<code>Google Charts</code>，最终将动态图表搬到了博客中：</p>
+<span id="more"></span>
+
+<div id="chart0" style="width: 85%;height: 400px;margin: 0 auto"></div>
+
+
+	
+		<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<script type="text/javascript">
+  var myChart = echarts.init(document.getElementById('chart0'));
+  option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 10,
+        data: ['直达', '营销广告', '搜索引擎', '邮件营销', '联盟广告', '视频广告', '百度', '谷歌', '必应', '其他']
+    },
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+            selectedMode: 'single',
+            radius: [0, '30%'],
+
+            label: {
+                position: 'inner'
+            },
+            labelLine: {
+                show: false
+            },
+            data: [
+                {value: 335, name: '直达', selected: true},
+                {value: 679, name: '营销广告'},
+                {value: 1548, name: '搜索引擎'}
+            ]
+        },
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['40%', '55%'],
+            label: {
+                formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                backgroundColor: '#eee',
+                borderColor: '#aaa',
+                borderWidth: 1,
+                borderRadius: 4,
+                // shadowBlur:3,
+                // shadowOffsetX: 2,
+                // shadowOffsetY: 2,
+                // shadowColor: '#999',
+                // padding: [0, 7],
+                rich: {
+                    a: {
+                        color: '#999',
+                        lineHeight: 22,
+                        align: 'center'
+                    },
+                    // abg: {
+                    //     backgroundColor: '#333',
+                    //     width: '100%',
+                    //     align: 'right',
+                    //     height: 22,
+                    //     borderRadius: [4, 4, 0, 0]
+                    // },
+                    hr: {
+                        borderColor: '#aaa',
+                        width: '100%',
+                        borderWidth: 0.5,
+                        height: 0
+                    },
+                    b: {
+                        fontSize: 16,
+                        lineHeight: 33
+                    },
+                    per: {
+                        color: '#eee',
+                        backgroundColor: '#334455',
+                        padding: [2, 4],
+                        borderRadius: 2
+                    }
+                }
+            },
+            data: [
+                {value: 335, name: '直达'},
+                {value: 310, name: '邮件营销'},
+                {value: 234, name: '联盟广告'},
+                {value: 135, name: '视频广告'},
+                {value: 1048, name: '百度'},
+                {value: 251, name: '谷歌'},
+                {value: 147, name: '必应'},
+                {value: 102, name: '其他'}
+            ]
+        }
+    ]
+};
+        myChart.setOption(option);
+</script>
+        
+        
+
+
+
+
+<p>当然，这主要是在Hexo上实现的。</p>
+<h3 id="安装并修改插件"><a href="#安装并修改插件" class="headerlink" title="安装并修改插件"></a>安装并修改插件</h3><p>首先安装Echart标签插件，从而实现Echarts的插入。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-tag-echarts3 --save</span><br></pre></td></tr></table></figure>
+
+<p>打开<code>hexo-tag-echarts3</code>插件Readme.md文件，可以看到用法：将Echarts的Option写在Tag中间。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;% echarts <span class="number">400</span> <span class="string">&#x27;85%&#x27;</span> %&#125;</span><br><span class="line">\\TODO echarts option goes here</span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后可以到<a href="https://www.echartsjs.com/examples/zh/index.html">Echarts官网实例库</a>，选择相应的图例，点开就可以看到相应的代码了，复制option后面的内容，粘贴在Tag标签内，然后数据修改成自己的，就可以将相应的图表嵌入到网页中了。</p>
+<p>但是这样做有一个缺点，官方库中有些图例代码中将数据放在option外，那么就无法正常显示了。因此需要对模块进行修改。</p>
+<p>打开模块的<code>template.html</code>文件，全部删除后替换成以下代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;&lt;%- id %&gt;&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: &lt;%- width %&gt;;height: &lt;%- height %&gt;px;margin: 0 auto&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&lt;%= option %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后打开<code>index.js</code>文件，将return _.template(template)后修改成下面：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> _.template(template)(&#123;</span><br><span class="line">    <span class="attr">id</span>: args[<span class="number">0</span>] || chart,</span><br><span class="line">    <span class="attr">option</span>: options,</span><br><span class="line">    <span class="attr">height</span>: args[<span class="number">1</span>] || <span class="number">400</span>,</span><br><span class="line">    <span class="attr">width</span>: args[<span class="number">2</span>] || <span class="string">&#x27;85%&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这样就修改好了，标签有三个参数，第一个参数是表格ID，第二个参数是DOM容器的高度，第三个参数是DOM容器的宽度。修改后自定义的程度就高多了，可以同时支持Echarts和Google Charts图表的插入。</p>
+<h3 id="Echarts图表插入样例"><a href="#Echarts图表插入样例" class="headerlink" title="Echarts图表插入样例"></a>Echarts图表插入样例</h3><p><a href="https://www.echartsjs.com/examples/zh/index.html">更多图例参考官网实例库</a></p>
+<p>效果：</p>
+<div id="chart2" style="width: 85%;height: 400px;margin: 0 auto"></div>
+
+
+	
+		
+<script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+<script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('chart2'));
+		var xAxisData = [];
+		var data1 = [];
+		var data2 = [];
+        for (var i = 0; i < 100; i++) {
+            xAxisData.push('Object' + i);
+            data1.push((Math.sin(i / 5) * (i / 5 -10) + i / 6) * 5);
+            data2.push((Math.cos(i / 5) * (i / 5 -10) + i / 6) * 5);
+        }
+
+        option = {
+            title: {
+                text: ' '
+            },
+            legend: {
+                data: ['bar', 'bar2']
+            },
+            toolbox: {
+                // y: 'bottom',
+                feature: {
+                    magicType: {
+                        type: ['stack', 'tiled']
+                    },
+                    dataView: {},
+                    saveAsImage: {
+                        pixelRatio: 2
+                    }
+                }
+            },
+            tooltip: {},
+            xAxis: {
+                data: xAxisData,
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+            },
+            series: [{
+                name: 'bar',
+                type: 'bar',
+                data: data1,
+                animationDelay: function (idx) {
+                    return idx * 10;
+                }
+            }, {
+                name: 'bar2',
+                type: 'bar',
+                data: data2,
+                animationDelay: function (idx) {
+                    return idx * 10 + 100;
+                }
+            }],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) {
+                return idx * 5;
+            }
+        };
+        myChart.setOption(option);
+</script>
+        
+        
+
+
+
+<p>代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;% echarts chart2 <span class="number">400</span> <span class="string">&#x27;85%&#x27;</span> %&#125;</span><br><span class="line">&lt;script src=<span class="string">&quot;https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js&quot;</span>&gt;&lt;/script&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">var</span> myChart = echarts.init(<span class="built_in">document</span>.getElementById(<span class="string">&#x27;chart2&#x27;</span>));</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> xAxisData = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> data1 = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">		<span class="keyword">var</span> data2 = [];</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            xAxisData.push(<span class="string">&#x27;Object&#x27;</span> + i);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            data1.push((<span class="built_in">Math</span>.sin(i / <span class="number">5</span>) * (i / <span class="number">5</span> -<span class="number">10</span>) + i / <span class="number">6</span>) * <span class="number">5</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            data2.push((<span class="built_in">Math</span>.cos(i / <span class="number">5</span>) * (i / <span class="number">5</span> -<span class="number">10</span>) + i / <span class="number">6</span>) * <span class="number">5</span>);</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml">        option = &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">title</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">text</span>: <span class="string">&#x27; &#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">legend</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: [<span class="string">&#x27;bar&#x27;</span>, <span class="string">&#x27;bar2&#x27;</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">toolbox</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="comment">// y: &#x27;bottom&#x27;,</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">feature</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">magicType</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                        <span class="attr">type</span>: [<span class="string">&#x27;stack&#x27;</span>, <span class="string">&#x27;tiled&#x27;</span>]</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">dataView</span>: &#123;&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">saveAsImage</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                        <span class="attr">pixelRatio</span>: <span class="number">2</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">tooltip</span>: &#123;&#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">xAxis</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: xAxisData,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">splitLine</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="attr">show</span>: <span class="literal">false</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">yAxis</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">series</span>: [&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">name</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">type</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: data1,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">animationDelay</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="keyword">return</span> idx * <span class="number">10</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;, &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">name</span>: <span class="string">&#x27;bar2&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">type</span>: <span class="string">&#x27;bar&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">data</span>: data2,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="attr">animationDelay</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                    <span class="keyword">return</span> idx * <span class="number">10</span> + <span class="number">100</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;],</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">animationEasing</span>: <span class="string">&#x27;elasticOut&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            <span class="attr">animationDelayUpdate</span>: <span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">                <span class="keyword">return</span> idx * <span class="number">5</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">            &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        &#125;;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        myChart.setOption(option);</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，标签内的第一个参数和表格ID要对应一致。</p>
+<h3 id="Google-Charts图表插入样例"><a href="#Google-Charts图表插入样例" class="headerlink" title="Google Charts图表插入样例"></a>Google Charts图表插入样例</h3><p><a href="https://developers.google.com/chart/interactive/docs">更多图例参考官网实例库</a></p>
+<p>效果：</p>
+<div id="chart1" style="width: 85%;height: 400px;margin: 0 auto"></div>
+
+
+	
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['gantt']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+    
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('string', 'Resource');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+    
+      data.addRows([
+        ['2014Spring', 'Spring 2014', 'spring',
+         new Date(2014, 2, 22), new Date(2014, 5, 20), null, 100, null],
+        ['2014Summer', 'Summer 2014', 'summer',
+         new Date(2014, 5, 21), new Date(2014, 8, 20), null, 100, null],
+        ['2014Autumn', 'Autumn 2014', 'autumn',
+         new Date(2014, 8, 21), new Date(2014, 11, 20), null, 100, null],
+        ['2014Winter', 'Winter 2014', 'winter',
+         new Date(2014, 11, 21), new Date(2015, 2, 21), null, 100, null],
+        ['2015Spring', 'Spring 2015', 'spring',
+         new Date(2015, 2, 22), new Date(2015, 5, 20), null, 50, null],
+        ['2015Summer', 'Summer 2015', 'summer',
+         new Date(2015, 5, 21), new Date(2015, 8, 20), null, 0, null],
+        ['2015Autumn', 'Autumn 2015', 'autumn',
+         new Date(2015, 8, 21), new Date(2015, 11, 20), null, 0, null],
+        ['2015Winter', 'Winter 2015', 'winter',
+         new Date(2015, 11, 21), new Date(2016, 2, 21), null, 0, null],
+        ['Football', 'Football Season', 'sports',
+         new Date(2014, 8, 4), new Date(2015, 1, 1), null, 100, null],
+        ['Baseball', 'Baseball Season', 'sports',
+         new Date(2015, 2, 31), new Date(2015, 9, 20), null, 14, null],
+        ['Basketball', 'Basketball Season', 'sports',
+         new Date(2014, 9, 28), new Date(2015, 5, 20), null, 86, null],
+        ['Hockey', 'Hockey Season', 'sports',
+         new Date(2014, 9, 8), new Date(2015, 5, 21), null, 89, null]
+      ]);
+    
+      var options = {
+        height: 400,
+        gantt: {
+          trackHeight: 30
+        }
+      };
+    
+      var chart = new 										    					  
+      google.visualization.Gantt(document.getElementById('chart1'));
+      chart.draw(data, options);
+    }
+</script>
+        
+        
+
+
+<p>代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;% echarts chart1 400 &#x27;85%&#x27; %&#125;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;https://www.gstatic.com/charts/loader.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">    google.charts.load(&#x27;current&#x27;, &#123;&#x27;packages&#x27;:[&#x27;gantt&#x27;]&#125;);</span><br><span class="line">    google.charts.setOnLoadCallback(drawChart);</span><br><span class="line"></span><br><span class="line">    function drawChart() &#123;</span><br><span class="line"></span><br><span class="line">      var data = new google.visualization.DataTable();</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Task ID&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Task Name&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Resource&#x27;);</span><br><span class="line">      data.addColumn(&#x27;date&#x27;, &#x27;Start Date&#x27;);</span><br><span class="line">      data.addColumn(&#x27;date&#x27;, &#x27;End Date&#x27;);</span><br><span class="line">      data.addColumn(&#x27;number&#x27;, &#x27;Duration&#x27;);</span><br><span class="line">      data.addColumn(&#x27;number&#x27;, &#x27;Percent Complete&#x27;);</span><br><span class="line">      data.addColumn(&#x27;string&#x27;, &#x27;Dependencies&#x27;);</span><br><span class="line"></span><br><span class="line">      data.addRows([</span><br><span class="line">        [&#x27;2014Spring&#x27;, &#x27;Spring 2014&#x27;, &#x27;spring&#x27;,</span><br><span class="line">         new Date(2014, 2, 22), new Date(2014, 5, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Summer&#x27;, &#x27;Summer 2014&#x27;, &#x27;summer&#x27;,</span><br><span class="line">         new Date(2014, 5, 21), new Date(2014, 8, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Autumn&#x27;, &#x27;Autumn 2014&#x27;, &#x27;autumn&#x27;,</span><br><span class="line">         new Date(2014, 8, 21), new Date(2014, 11, 20), null, 100, null],</span><br><span class="line">        [&#x27;2014Winter&#x27;, &#x27;Winter 2014&#x27;, &#x27;winter&#x27;,</span><br><span class="line">         new Date(2014, 11, 21), new Date(2015, 2, 21), null, 100, null],</span><br><span class="line">        [&#x27;2015Spring&#x27;, &#x27;Spring 2015&#x27;, &#x27;spring&#x27;,</span><br><span class="line">         new Date(2015, 2, 22), new Date(2015, 5, 20), null, 50, null],</span><br><span class="line">        [&#x27;2015Summer&#x27;, &#x27;Summer 2015&#x27;, &#x27;summer&#x27;,</span><br><span class="line">         new Date(2015, 5, 21), new Date(2015, 8, 20), null, 0, null],</span><br><span class="line">        [&#x27;2015Autumn&#x27;, &#x27;Autumn 2015&#x27;, &#x27;autumn&#x27;,</span><br><span class="line">         new Date(2015, 8, 21), new Date(2015, 11, 20), null, 0, null],</span><br><span class="line">        [&#x27;2015Winter&#x27;, &#x27;Winter 2015&#x27;, &#x27;winter&#x27;,</span><br><span class="line">         new Date(2015, 11, 21), new Date(2016, 2, 21), null, 0, null],</span><br><span class="line">        [&#x27;Football&#x27;, &#x27;Football Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 8, 4), new Date(2015, 1, 1), null, 100, null],</span><br><span class="line">        [&#x27;Baseball&#x27;, &#x27;Baseball Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2015, 2, 31), new Date(2015, 9, 20), null, 14, null],</span><br><span class="line">        [&#x27;Basketball&#x27;, &#x27;Basketball Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 9, 28), new Date(2015, 5, 20), null, 86, null],</span><br><span class="line">        [&#x27;Hockey&#x27;, &#x27;Hockey Season&#x27;, &#x27;sports&#x27;,</span><br><span class="line">         new Date(2014, 9, 8), new Date(2015, 5, 21), null, 89, null]</span><br><span class="line">      ]);</span><br><span class="line"></span><br><span class="line">      var options = &#123;</span><br><span class="line">        height: 400,</span><br><span class="line">        gantt: &#123;</span><br><span class="line">          trackHeight: 30</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      var chart = new 										    					  </span><br><span class="line">      google.visualization.Gantt(document.getElementById(&#x27;chart1&#x27;));</span><br><span class="line">      chart.draw(data, options);</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&#123;% endecharts %&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>云计算</category>
+      </categories>
+      <tags>
+        <tag>数据呈现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown数学公式</title>
+    <url>/2019/04/03/5/</url>
+    <content><![CDATA[<p>数学公式语法</p>
+<span id="more"></span>
+
+<h3 id="行内与独行"><a href="#行内与独行" class="headerlink" title="行内与独行"></a>行内与独行</h3><ol>
+<li>行内公式：将公式插入到本行内，符号：<code>$公式内容$</code>，如：$xyz$</li>
+<li>独行公式：将公式插入到新的一行内，并且居中，符号：<code>$$公式内容$$</code>，如：$$xyz$$</li>
+</ol>
+<h3 id="上标、下标与组合"><a href="#上标、下标与组合" class="headerlink" title="上标、下标与组合"></a>上标、下标与组合</h3><ol>
+<li>上标符号，符号：<code>^</code>，如：$x^4$</li>
+<li>下标符号，符号：<code>_</code>，如：$x_1$</li>
+<li>组合符号，符号：<code>&#123;&#125;</code>，如：${16}<em>{8}O{2+}</em>{2}$</li>
+</ol>
+<h3 id="汉字、字体与格式"><a href="#汉字、字体与格式" class="headerlink" title="汉字、字体与格式"></a>汉字、字体与格式</h3><ol>
+<li>汉字形式，符号：<code>\mbox&#123;&#125;</code>，如：$V_{\mbox{初始}}$</li>
+<li>字体控制，符号：<code>\displaystyle</code>，如：$\displaystyle \frac{x+y}{y+z}$</li>
+<li>下划线符号，符号：<code>\underline</code>，如：$\underline{x+y}$</li>
+<li>标签，符号<code>\tag&#123;数字&#125;</code>，如：$\tag{11}$</li>
+<li>上大括号，符号：<code>\overbrace&#123;算式&#125;</code>，如：$\overbrace{a+b+c+d}^{2.0}$</li>
+<li>下大括号，符号：<code>\underbrace&#123;算式&#125;</code>，如：$a+\underbrace{b+c}_{1.0}+d$</li>
+<li>上位符号，符号：<code>\stacrel&#123;上位符号&#125;&#123;基位符号&#125;</code>，如：$\vec{x}\stackrel{\mathrm{def}}{=}{x_1,\dots,x_n}$</li>
+</ol>
+<h3 id="占位符"><a href="#占位符" class="headerlink" title="占位符"></a>占位符</h3><ol>
+<li>两个quad空格，符号：<code>\qquad</code>，如：$x \qquad y$</li>
+<li>quad空格，符号：<code>\quad</code>，如：$x \quad y$</li>
+<li>大空格，符号<code>\</code>，如：$x \  y$</li>
+<li>中空格，符号<code>\:</code>，如：$x : y$</li>
+<li>小空格，符号<code>\,</code>，如：$x , y$</li>
+<li>没有空格，符号``，如：$xy$</li>
+<li>紧贴，符号<code>\!</code>，如：$x ! y$</li>
+</ol>
+<h3 id="定界符与组合"><a href="#定界符与组合" class="headerlink" title="定界符与组合"></a>定界符与组合</h3><ol>
+<li>括号，符号：<code>（）\big(\big) \Big(\Big) \bigg(\bigg) \Bigg(\Bigg)</code>，如：$（）\big(\big) \Big(\Big) \bigg(\bigg) \Bigg(\Bigg)$</li>
+<li>中括号，符号：<code>[]</code>，如：$[x+y]$</li>
+<li>大括号，符号：<code>\&#123; \&#125;</code>，如：${x+y}$</li>
+<li>自适应括号，符号：<code>\left \right</code>，如：$\left(x\right)$，$\left(x{yz}\right)$</li>
+<li>组合公式，符号：<code>&#123;上位公式 \choose 下位公式&#125;</code>，如：${n+1 \choose k}={n \choose k}+{n \choose k-1}$</li>
+<li>组合公式，符号：<code>&#123;上位公式 \atop 下位公式&#125;</code>，如：$\sum_{k_0,k_1,\ldots&gt;0 \atop k_0+k_1+\cdots=n}A_{k_0}A_{k_1}\cdots$</li>
+</ol>
+<h3 id="四则运算"><a href="#四则运算" class="headerlink" title="四则运算"></a>四则运算</h3><ol>
+<li>加法运算，符号：<code>+</code>，如：$x+y=z$</li>
+<li>减法运算，符号：<code>-</code>，如：$x-y=z$</li>
+<li>加减运算，符号：<code>\pm</code>，如：$x \pm y=z$</li>
+<li>减甲运算，符号：<code>\mp</code>，如：$x \mp y=z$</li>
+<li>乘法运算，符号：<code>\times</code>，如：$x \times y=z$</li>
+<li>点乘运算，符号：<code>\cdot</code>，如：$x \cdot y=z$</li>
+<li>星乘运算，符号：<code>\ast</code>，如：$x \ast y=z$</li>
+<li>除法运算，符号：<code>\div</code>，如：$x \div y=z$</li>
+<li>斜法运算，符号：<code>/</code>，如：$x/y=z$</li>
+<li>分式表示，符号：<code>\frac&#123;分子&#125;&#123;分母&#125;</code>，如：$\frac{x+y}{y+z}$</li>
+<li>分式表示，符号：<code>&#123;分子&#125; \voer &#123;分母&#125;</code>，如：${x+y} \over {y+z}$</li>
+<li>绝对值表示，符号：<code>||</code>，如：$|x+y|$</li>
+</ol>
+<h3 id="高级运算"><a href="#高级运算" class="headerlink" title="高级运算"></a>高级运算</h3><ol>
+<li>平均数运算，符号：<code>\overline&#123;算式&#125;</code>，如：$\overline{xyz}$</li>
+<li>开二次方运算，符号：<code>\sqrt</code>，如：$\sqrt x$</li>
+<li>开方运算，符号：<code>\sqrt[开方数]&#123;被开方数&#125;</code>，如：$\sqrt[3]{x+y}$</li>
+<li>对数运算，符号：<code>\log</code>，如：$\log(x)$</li>
+<li>极限运算，符号：<code>\lim</code>，如：$\lim^{x \to \infty}_{y \to 0}{\frac{x}{y}}$</li>
+<li>极限运算，符号：<code>\displaystyle \lim</code>，如：$\displaystyle \lim^{x \to \infty}_{y \to 0}{\frac{x}{y}}$</li>
+<li>求和运算，符号：<code>\sum</code>，如：$\sum^{x \to \infty}_{y \to 0}{\frac{x}{y}}$</li>
+<li>求和运算，符号：<code>\displaystyle \sum</code>，如：$\displaystyle \sum^{x \to \infty}_{y \to 0}{\frac{x}{y}}$</li>
+<li>积分运算，符号：<code>\int</code>，如：$\int^{\infty}_{0}{xdx}$</li>
+<li>积分运算，符号：<code>\displaystyle \int</code>，如：$\displaystyle \int^{\infty}_{0}{xdx}$</li>
+<li>微分运算，符号：<code>\partial</code>，如：$\frac{\partial x}{\partial y}$</li>
+<li>矩阵表示，符号：<code>\begin&#123;matrix&#125; \end&#123;matrix&#125;</code>，如：$\left[ \begin{matrix} 1 &amp;2 &amp;\cdots &amp;4\5 &amp;6 &amp;\cdots &amp;8\vdots &amp;\vdots &amp;\ddots &amp;\vdots\13 &amp;14 &amp;\cdots &amp;16\end{matrix} \right]$</li>
+</ol>
+<h3 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h3><ol>
+<li>等于运算，符号：<code>=</code>，如：$x+y=z$</li>
+<li>大于运算，符号：<code>&gt;</code>，如：$x+y&gt;z$</li>
+<li>小于运算，符号：<code>&lt;</code>，如：$x+y&lt;z$</li>
+<li>大于等于运算，符号：<code>\geq</code>，如：$x+y \geq z$</li>
+<li>小于等于运算，符号：<code>\leq</code>，如：$x+y \leq z$</li>
+<li>不等于运算，符号：<code>\neq</code>，如：$x+y \neq z$</li>
+<li>不大于等于运算，符号：<code>\ngeq</code>，如：$x+y \ngeq z$</li>
+<li>不大于等于运算，符号：<code>\not\geq</code>，如：$x+y \not\geq z$</li>
+<li>不小于等于运算，符号：<code>\nleq</code>，如：$x+y \nleq z$</li>
+<li>不小于等于运算，符号：<code>\not\leq</code>，如：$x+y \not\leq z$</li>
+<li>约等于运算，符号：<code>\approx</code>，如：$x+y \approx z$</li>
+<li>恒定等于运算，符号：<code>\equiv</code>，如：$x+y \equiv z$</li>
+</ol>
+<h3 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h3><ol>
+<li>属于运算，符号：<code>\in</code>，如：$x \in y$</li>
+<li>不属于运算，符号：<code>\notin</code>，如：$x \notin y$</li>
+<li>不属于运算，符号：<code>\not\in</code>，如：$x \not\in y$</li>
+<li>子集运算，符号：<code>\subset</code>，如：$x \subset y$</li>
+<li>子集运算，符号：<code>\supset</code>，如：$x \supset y$</li>
+<li>真子集运算，符号：<code>\subseteq</code>，如：$x \subseteq y$</li>
+<li>非真子集运算，符号：<code>\subsetneq</code>，如：$x \subsetneq y$</li>
+<li>真子集运算，符号：<code>\supseteq</code>，如：$x \supseteq y$</li>
+<li>非真子集运算，符号：<code>\supsetneq</code>，如：$x \supsetneq y$</li>
+<li>非子集运算，符号：<code>\not\subset</code>，如：$x \not\subset y$</li>
+<li>非子集运算，符号：<code>\not\supset</code>，如：$x \not\supset y$</li>
+<li>并集运算，符号：<code>\cup</code>，如：$x \cup y$</li>
+<li>交集运算，符号：<code>\cap</code>，如：$x \cap y$</li>
+<li>差集运算，符号：<code>\setminus</code>，如：$x \setminus y$</li>
+<li>同或运算，符号：<code>\bigodot</code>，如：$x \bigodot y$</li>
+<li>同与运算，符号：<code>\bigotimes</code>，如：$x \bigotimes y$</li>
+<li>实数集合，符号：<code>\mathbb&#123;R&#125;</code>，如：<code>\mathbb&#123;R&#125;</code></li>
+<li>自然数集合，符号：<code>\mathbb&#123;Z&#125;</code>，如：<code>\mathbb&#123;Z&#125;</code></li>
+<li>空集，符号：<code>\emptyset</code>，如：$\emptyset$</li>
+</ol>
+<h3 id="数学符号"><a href="#数学符号" class="headerlink" title="数学符号"></a>数学符号</h3><ol>
+<li>无穷，符号：<code>\infty</code>，如：$\infty$</li>
+<li>虚数，符号：<code>\imath</code>，如：$\imath$</li>
+<li>虚数，符号：<code>\jmath</code>，如：$\jmath$</li>
+<li>数学符号，符号<code>\hat&#123;a&#125;</code>，如：$\hat{a}$</li>
+<li>数学符号，符号<code>\check&#123;a&#125;</code>，如：$\check{a}$</li>
+<li>数学符号，符号<code>\breve&#123;a&#125;</code>，如：$\breve{a}$</li>
+<li>数学符号，符号<code>\tilde&#123;a&#125;</code>，如：$\tilde{a}$</li>
+<li>数学符号，符号<code>\bar&#123;a&#125;</code>，如：$\bar{a}$</li>
+<li>矢量符号，符号<code>\vec&#123;a&#125;</code>，如：$\vec{a}$</li>
+<li>数学符号，符号<code>\acute&#123;a&#125;</code>，如：$\acute{a}$</li>
+<li>数学符号，符号<code>\grave&#123;a&#125;</code>，如：$\grave{a}$</li>
+<li>数学符号，符号<code>\mathring&#123;a&#125;</code>，如：$\mathring{a}$</li>
+<li>一阶导数符号，符号<code>\dot&#123;a&#125;</code>，如：$\dot{a}$</li>
+<li>二阶导数符号，符号<code>\ddot&#123;a&#125;</code>，如：$\ddot{a}$</li>
+<li>上箭头，符号：<code>\uparrow</code>，如：$\uparrow$</li>
+<li>上箭头，符号：<code>\Uparrow</code>，如：$\Uparrow$</li>
+<li>下箭头，符号：<code>\downarrow</code>，如：$\downarrow$</li>
+<li>下箭头，符号：<code>\Downarrow</code>，如：$\Downarrow$</li>
+<li>左箭头，符号：<code>\leftarrow</code>，如：$\leftarrow$</li>
+<li>左箭头，符号：<code>\Leftarrow</code>，如：$\Leftarrow$</li>
+<li>右箭头，符号：<code>\rightarrow</code>，如：$\rightarrow$</li>
+<li>右箭头，符号：<code>\Rightarrow</code>，如：$\Rightarrow$</li>
+<li>底端对齐的省略号，符号：<code>\ldots</code>，如：$1,2,\ldots,n$</li>
+<li>中线对齐的省略号，符号：<code>\cdots</code>，如：$x_1^2 + x_2^2 + \cdots + x_n^2$</li>
+<li>竖直对齐的省略号，符号：<code>\vdots</code>，如：$\vdots$</li>
+<li>斜对齐的省略号，符号：<code>\ddots</code>，如：$\ddots$</li>
+</ol>
+<h3 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h3><table>
+<thead>
+<tr>
+<th>字母</th>
+<th>实现</th>
+<th>字母</th>
+<th>实现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td><code>A</code></td>
+<td>α</td>
+<td><code>\alhpa</code></td>
+</tr>
+<tr>
+<td>B</td>
+<td><code>B</code></td>
+<td>β</td>
+<td><code>\beta</code></td>
+</tr>
+<tr>
+<td>Γ</td>
+<td><code>\Gamma</code></td>
+<td>γ</td>
+<td><code>\gamma</code></td>
+</tr>
+<tr>
+<td>Δ</td>
+<td><code>\Delta</code></td>
+<td>δ</td>
+<td><code>\delta</code></td>
+</tr>
+<tr>
+<td>E</td>
+<td><code>E</code></td>
+<td>ϵ</td>
+<td><code>\epsilon</code></td>
+</tr>
+<tr>
+<td>Z</td>
+<td><code>Z</code></td>
+<td>ζ</td>
+<td><code>\zeta</code></td>
+</tr>
+<tr>
+<td>H</td>
+<td><code>H</code></td>
+<td>η</td>
+<td><code>\eta</code></td>
+</tr>
+<tr>
+<td>Θ</td>
+<td><code>\Theta</code></td>
+<td>θ</td>
+<td><code>\theta</code></td>
+</tr>
+<tr>
+<td>I</td>
+<td><code>I</code></td>
+<td>ι</td>
+<td><code>\iota</code></td>
+</tr>
+<tr>
+<td>K</td>
+<td><code>K</code></td>
+<td>κ</td>
+<td><code>\kappa</code></td>
+</tr>
+<tr>
+<td>Λ</td>
+<td><code>\Lambda</code></td>
+<td>λ</td>
+<td><code>\lambda</code></td>
+</tr>
+<tr>
+<td>M</td>
+<td><code>M</code></td>
+<td>μ</td>
+<td><code>\mu</code></td>
+</tr>
+<tr>
+<td>N</td>
+<td><code>N</code></td>
+<td>ν</td>
+<td><code>\nu</code></td>
+</tr>
+<tr>
+<td>Ξ</td>
+<td><code>\Xi</code></td>
+<td>ξ</td>
+<td><code>\xi</code></td>
+</tr>
+<tr>
+<td>O</td>
+<td><code>O</code></td>
+<td>ο</td>
+<td><code>\omicron</code></td>
+</tr>
+<tr>
+<td>Π</td>
+<td><code>\Pi</code></td>
+<td>π</td>
+<td><code>\pi</code></td>
+</tr>
+<tr>
+<td>P</td>
+<td><code>P</code></td>
+<td>ρ</td>
+<td><code>\rho</code></td>
+</tr>
+<tr>
+<td>Σ</td>
+<td><code>\Sigma</code></td>
+<td>σ</td>
+<td><code>\sigma</code></td>
+</tr>
+<tr>
+<td>T</td>
+<td><code>T</code></td>
+<td>τ</td>
+<td><code>\tau</code></td>
+</tr>
+<tr>
+<td>Υ</td>
+<td><code>\Upsilon</code></td>
+<td>υ</td>
+<td><code>\upsilon</code></td>
+</tr>
+<tr>
+<td>Φ</td>
+<td><code>\Phi</code></td>
+<td>ϕ</td>
+<td><code>\phi</code></td>
+</tr>
+<tr>
+<td>X</td>
+<td><code>X</code></td>
+<td>χ</td>
+<td><code>\chi</code></td>
+</tr>
+<tr>
+<td>Ψ</td>
+<td><code>\Psi</code></td>
+<td>ψ</td>
+<td><code>\psi</code></td>
+</tr>
+<tr>
+<td>Ω</td>
+<td><code>\v</code></td>
+<td>ω</td>
+<td><code>\omega</code></td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>Markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>等级保护与分级保护</title>
+    <url>/2019/06/30/7/</url>
+    <content><![CDATA[<p>数据中心中的信息安全问题已经成为人们关注的焦点中的焦点，如何让人们安心地将自己的私密信息放到数据中心中去，消除心中疑虑，仍有很多工作要做。从数据中心角度来讲，只能不断地加强对自身信息安全的管理，保护数据中心的各类信息不受泄露或损坏。在这里，在国家层面也制定了相应的标准做参考，强制性地要求各信息中心单位能够遵守各项信息安全规定，提升整体的信息安全防护措施。</p>
+<span id="more"></span>
+
+<blockquote>
+<p>8 月 16 日，安徽网警依法查处一起违反网络安全等级保护制度的案件，因蚌埠怀远县教师进修学校网站因网络安全等级保护制度落实不到位，遭黑客攻击入侵，安徽省公安厅对学校进行了处罚，同时约谈了当地分管的副县长。这件事情之所以受到广泛关注在于处罚力度，以往这类事件也偶有发生，但并没有相应的处罚，大家总是觉得这类事情不算个事儿。实际上，国家早就颁布了相关法案，只是在执行上多采用警告、约谈的方式，实际进行处罚的并不多，这次显然国家加大了处罚力度，对不符合安全要求的就要坚决处理。说到这儿，数据中心信息安全处罚依据有两个方面国家制度：等级保护和分级保护，从事信息交互的单位要遵守这些制度，触犯了就要受到处罚。</p>
+</blockquote>
+<h2 id="等级保护"><a href="#等级保护" class="headerlink" title="等级保护"></a>等级保护</h2><p>等级保护全称是信息安全等级保护，2003 年由中办、国办转发《国家信息化领导小组关于加强信息安全保障工作的意见》提出实行信息安全等级保护、建立国家信息安全保障体系的明确要求，公安部又颁布了《信息安全等级保护管理办法》。在 2009 年，公安部联合国家保密局、国家密码管理局、国务院信息化工作办公室发布《关于组织开展 2009 年度本市重要信息系统等级保护工作的通知》，可见国家层面对信息安全是非常重视了，不断加强健全信息安全方面的法律法规，加强信息安全方面的管理。等级保护按照破坏性、影响力分为五级：一级（自主保护）、二级（指导保护）、三级（监督保护）、四级（强制保护）、五级（专控保护）。其中，一二级一般不影响国家安全，但三级及以上就有可能对国家安全造成损害。等级保护的对象是涉及国计民生的重要信息系统和通信基础信息系统，自然包括那些中大型数据中心，而不论它是否涉密。公安机关是等级保护工作的主管部门，负责信息安全等级保护工作的监督、检查、指导。我们打开一个正规的网站，在网站的下方都会有“X 公网安备 XXXX 号”的字样，证明此网站经过了公关机关的审核，已经颁发了等级保护备案证明，大家可以放心使用和访问，对于那些没有经过公关机关备案的，多半是钓鱼网站或黑网站，不要访问和使用这类网站。国家保密工作部门、国家密码管理部门负责等级保护工作中有关保密工作和密码工作的监督、检查、指导，国信办及地方信息化领导小组办事机构负责等级保护工作部门间的协调，涉及国家秘密信息系统的等级保护监督管理工作由国家保密工作部门负责。</p>
+<h2 id="分级保护"><a href="#分级保护" class="headerlink" title="分级保护"></a>分级保护</h2><p>分级保护是中央保密委员会于 2004 年 12 月下发的《关于加强信息安全保障工作中保密管理若干一件》明确提出要建立健全涉密信息系统分级保护制度，2005 年 12 月国家保密局下发了《涉及国家秘密的信息系统分级保护管理办法》，同时，《保密法》修订草案也增加了网络安全保密管理的条款。分级保护分为秘密级、机密级和机密级（增强）、绝密级三个等级。三个等级对应等级保护的三四五级。分级保护由国家保密局来管理，推广带有强制性。分级保护定级是依据信息的重要性，以信息最高密级确定受保护的级别。涉密数据中心建设使用单位将涉密信息定级和建设使用情况，上报业务主管部门和保密工作机构和负责数据中心审批的保密工作部门备案，并接受保密部门的监督、检查和指导。定级要素是数据中心内处理的最高密级的数据。简单地讲，如果数据中心存在机密级和秘密级文件，那么数据中心为机密级。另外，还有一个规定是，如果机密级数据中心中处理的数据涉及军工，国防等领域，需要按机密增强进行防护。由保密局检查监督。</p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>从以上介绍中不难发现，等级保护和分级保护具有明显不同。主管单位不同、等级定义也不同、依据标准不同等等。大部分的数据中心都要经过等级保护，而只有很少的数据中心需要分级保护审核备案。等级保护是国家从整体上、根本上解决国家信息安全问题的办法， 进一步确定了信息安全发展的主线和中心任务， 提出了总体要求。对数据中心实行等级保护是国家法定制度和基本国策，是开展信息安全保护工作的有效办法，是信息安全保护工作的发展方向。而分级保护则是国家信息安全等级保护在涉及国家秘密信息的数据中心中特殊保护措施与方法。由于国家秘密信息与公开信息在内容和特性上有着明显的区别，所以涉密的数据中心和公众信息的数据中心在保障安全的原则、系统和方法等方面也有不同的要求。既不能用维护国家秘密信息安全的办法去维护国家公众信息安全，以至于影响信息的合理利用，阻碍信息化的发展；也不能用维护公众信息安全的办法来维护国家的秘密信息安全，以至于窃密、泄密事件的发生，危害国家的安全和利益，同样影响信息化的健康发展。说到底，还是两种保护标准的出发点不同，面向的对象也不同，数据中心要根据自己处理信息的安全去考虑做等级保护还是分级保护的审核和备案，公安机关和保密局也会根.</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>IDC机房建设标准</title>
+    <url>/2019/08/10/8/</url>
+    <content><![CDATA[<p>IDC机房建设标准</p>
+<span id="more"></span>
+<h2 id="物理标准"><a href="#物理标准" class="headerlink" title="物理标准"></a>物理标准</h2><ol>
+<li><p>根据功能的不同，IDC可以划分为主机房区、支持区和辅助区。主机房区包括：服务器机房、网络机房、存储机房等。支持区包括：高低压变配电房、发电机房、UPS电池电力室、空调机房、设备监控机房、接入室和消防控制中心等。辅助区包括：客户接待区、客户操作区、监控室、大客户休息区、会议室等，可根据实际功能需要进行选择性设置。</p>
+</li>
+<li><p>IDC机楼天面应做一级防水，地下室防水等级应为一级。</p>
+</li>
+<li><p>机房净高一般在2.5m~3.2m；计算机机房楼板荷载：A级&gt;500kg/m2B级&gt;300kg/m2空调机房、供电设备用房&gt;1000kg/m2</p>
+</li>
+<li><p>架空地板的高度应通过计算确定，确保地板下断面风速控制在1.5~2.5m/s，单机架功率不小于3.2kW时，活动地板高度不宜小于500mm；单机架功率不小于4kW时，活动地板高度不宜小于600mm；单机架功率不小于4.8kW时，活动地板高度不宜小于700mm。</p>
+</li>
+<li><p>为合理规划机房内气流组织，建议机房内机架统一按面对面、背靠背方式排列，即相邻二列机柜的正面板相对或者背面板相对排列。其中冷通道应不少于1000mm，热通道应不少于700mm。</p>
+</li>
+<li><p>IDC机房的建筑平面和空间布局应具有灵活性。主体结构宜采用大空间及大跨度柱网，大型IDC柱网宜大于7.2米，中小型柱网不应小于6.0米。有地下车库的应考虑与小车停车位经济模数结合。</p>
+</li>
+</ol>
+<h2 id="关于电源和UPS"><a href="#关于电源和UPS" class="headerlink" title="关于电源和UPS"></a>关于电源和UPS</h2><ol>
+<li><p>按照电信相关规定，供电电源应符合下列规定：A、B级IDC应由两个电源供电，两个电源不应同时受到损坏；C级IDC应由两回线路供电。</p>
+</li>
+<li><p>除由市电电源供电外，应配置可靠的备用发电机作为应急电源，发电机组应具有快速自动启动、自动切换、自动停机和遥测、遥信功能。市电电源与发电机后备电源的切换应采用具有旁路隔离功能的自动转换装置；自动转换装置检修时，不应影响电源的切换。</p>
+</li>
+<li><p>企业的数据中心需要采用发电机阵列，其可以提供数据中心正常运行所必要的电力。例如谷歌就已经在其位于爱荷华州的数据中心安装了30多台发电机。</p>
+</li>
+<li><p> 柴油发电机房的确定：考虑到柴油发电机组的进风、排风、排烟等情况，如果有条件时机房最好设在首层。但是，高层建筑功能较复杂，对面积的利用率要高，因此，一般把发电机房设在地下室的地下一层，不宜设在地下二层及以下。这时，解决好通风、防潮、机组的排烟、消音和减振就显得非常重要，在设计中要注意处理好。</p>
+</li>
+</ol>
+<blockquote>
+<p><code>机房选址时应注意以下几点：不应设在四周无外墙的房间，为热风管道和排烟管道伸出室外创造有利条件；尽量避开建筑物的主入口、正立面等部位，以免排烟、排风对其造成影响；注意噪音对环境的影响；宜靠近建筑物的变电所，这样便于接线，减少电能损耗，也便于运行管理；不应设在厕所、浴室或其他经常积水场所的正下方和贴邻。</code></p>
+</blockquote>
+<ol start="5">
+<li>UPS蓄电池组配置：UPS后备电池放电时间，应根据投资及可靠性的要求设置，满足系统设计负荷工作30分钟，UPS的蓄电池宜每台主机设两组，当两组蓄电池容量不足时可多组并联，但并联的组数不应超过4组。</li>
+</ol>
+<h2 id="关于机柜和服务器"><a href="#关于机柜和服务器" class="headerlink" title="关于机柜和服务器"></a>关于机柜和服务器</h2><ol>
+<li><p>42U的普通机柜，大小600<em>800</em>2000，理论可以放1U的服务器42个，但是为了散热和操作方便，按照电信规定通常放置不超过16台的1U高度的服务器。</p>
+</li>
+<li><p>单机架功率小于等于3.2kW为中低功率密度机架，单机架功率介于3.2kW~7kW为高功率密度机架；单机架功率大于7kW为超高密度机架。</p>
+</li>
+<li><p>Google云计算有100多万台服务器，IBM、微软均有几十万台，而一般的企业私有云一般都有数百上千台服务器。</p>
+</li>
+<li><p>按照1000台服务器，大约1000/16=62.5个机柜，机房面积至少在300多平方，机房和配套投资大约在600多万。（不包括服务器的投入）。服务器每台几万到几十万的都有。</p>
+</li>
+</ol>
+<h2 id="关于网络"><a href="#关于网络" class="headerlink" title="关于网络"></a>关于网络</h2><ol>
+<li>IDC网络设备和链路应采用冗余配置，出口网络方向应采用至少两条上行链路接入到不同设备。A级、B级IDC的上行链路宜使用不同方向的路由。</li>
+</ol>
+<h2 id="相关案例"><a href="#相关案例" class="headerlink" title="相关案例"></a>相关案例</h2><h3 id="300个机柜的中型IDC机房"><a href="#300个机柜的中型IDC机房" class="headerlink" title="300个机柜的中型IDC机房"></a>300个机柜的中型IDC机房</h3><blockquote>
+<ol>
+<li>占用面积：1500平方；每个机柜5平方（包括设备中心、运维中心、监控中心、UPS）。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>电源要求：3000千瓦（一路）；每个机柜平均10KVA（包括设备功耗、制冷等）。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>投资额：3000万左右；平均每个机柜约10万。</li>
+</ol>
+</blockquote>
+<h3 id="20个机柜的小型企业数据中心"><a href="#20个机柜的小型企业数据中心" class="headerlink" title="20个机柜的小型企业数据中心"></a>20个机柜的小型企业数据中心</h3><blockquote>
+<ol>
+<li>一般中小型企业数据中心，20个机柜，占地面积130平方</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>投资额：190万（包装修、电源、消防、报警等，但不含服务器及硬件设备）。</li>
+</ol>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>常见对称加密算法特性分析</title>
+    <url>/2019/09/20/9/</url>
+    <content><![CDATA[<p>在选择加密算法，面对一大长串的选项时，大家都有这样的疑问，究竟哪种加密方式是最好的呢？</p>
+<p>对于加密方式、算法来说，一般安全性与性能呈负相关，越是安全的，对性能要求则更高。</p>
+<p>现在主流的加密协议的安全性均能达到标准，因此这里主要讨论的最好便是加密性能的优良。</p>
+<span id="more"></span>
+
+<p>对于 OpenSSL 而言，有三种常见的加密方式：RC4、AES、ChaCha。</p>
+<p>单看这三种加密方式，都是非常具有代表性，可以说每种都有优缺点。</p>
+<h2 id="AEAD"><a href="#AEAD" class="headerlink" title="AEAD"></a>AEAD</h2><p>在传统的对称加密协议中，最大的缺陷就是没有对数据包完整性进行校验，再加上流加密的特点，导致了攻击者可以通过穷举的方式修改密文进行基于服务器行为的主动探测。</p>
+<p>在通常的密码学应用中，Confidentiality（保密）用加密实现，消息认证用 MAC（Message Authentication Code，消息验证码）实现。这两种算法的配合方式，引发了很多安全漏洞，过去曾经有 3 种方法：</p>
+<blockquote>
+<ol>
+<li>Encrypt-and-MAC (E&amp;M)</li>
+<li>MAC-then-Encrypt (MtE) &lt;- 即 OTA 的做法</li>
+<li>Encrypt-then-MAC (EtM) &lt;- 新协议的做法</li>
+</ol>
+</blockquote>
+<p>然而后来人们发现，E&amp;M 和 MtE 都是有安全问题的，所以 2008 年起， 逐渐提出了「用一个算法在内部同时实现加密和认证」的方法，称为 AEAD (Authenticated Encryption with Associated Data)。在 AEAD 这种概念里，cipher + MAC 的模式被一个 AEAD 算法替换。</p>
+<p>使用了 AEAD 算法的新协议本质上就是更完善的 stream cipher + authentication，虽然它依然使用的是流加密（StreamCipher），但是通过更完善的数据包完整性验证机制杜绝了上面所述的可被篡改密文的可能性。</p>
+<p>目前以下加密方式支持 AEAD 算法：</p>
+<blockquote>
+<ol>
+<li>AES-128-GCM</li>
+<li>AES-192-GCM</li>
+<li>AES-256-GCM</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+</ol>
+</blockquote>
+<p>但如果是用在路由器上，因为很多路由器 CPU 速度都在 500MHz 以下，并且不支持 AES 硬解，因为在路由器等计算能力弱的设备上使用 AES 加密方式会造成性能影响，所以，之前使用在路由器上的加密方式一般都选 ChaCha20 算法或 RC4-MD5 （特别是 MIPS 架构的处理器）。</p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>支持 AES 指令集情况下：</p>
+<blockquote>
+<ul>
+<li><code>更快（Fast）</code></li>
+</ul>
+<ol>
+<li>RC4-MD5</li>
+<li>AES-256-CFB</li>
+<li>AES-256-GCM</li>
+<li>ChaCha20</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+</ol>
+<ul>
+<li><code>更慢（Slow）</code></li>
+</ul>
+</blockquote>
+<p>不支持 AES 指令集情况下：</p>
+<blockquote>
+<ul>
+<li><code>更快（Fast）</code></li>
+</ul>
+<ol>
+<li>RC4-MD5</li>
+<li>ChaCha20</li>
+<li>ChaCha20-IETF-Poly1305</li>
+<li>XChaCha20-IETF-Poly1305</li>
+<li>AES-256-CFB</li>
+<li>AES-256-GCM</li>
+</ol>
+<ul>
+<li><code>更慢（Slow）</code></li>
+</ul>
+</blockquote>
+<p>在各类处理器的测试数据：</p>
+<table>
+<thead>
+<tr>
+<th>Chip</th>
+<th>AES-128-GCM 速度</th>
+<th>ChaCha20-Poly1305 速度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OMAP 4460</td>
+<td>24.1 MB/s</td>
+<td>75.3 MB/s</td>
+</tr>
+<tr>
+<td>Snapdragon S4 Pro</td>
+<td>41.5 MB/s</td>
+<td>130.9 MB/s</td>
+</tr>
+<tr>
+<td>Sandy Bridge Xeon (AES-NI)</td>
+<td>900 MB/s</td>
+<td>500 MB/s</td>
+</tr>
+</tbody></table>
+<h2 id="RC4-加密"><a href="#RC4-加密" class="headerlink" title="RC4 加密"></a>RC4 加密</h2><p>速度最快，加密简单易破解，适合内网、低性能设备，推荐使用 RC4-MD5。</p>
+<blockquote>
+<p>RC4-MD5：使用 RC4 加密 MD5 校验。</p>
+</blockquote>
+<h2 id="AES-加密"><a href="#AES-加密" class="headerlink" title="AES 加密"></a>AES 加密</h2><p>块加密算法，兼顾效率和安全，适合在拥有 AES 指令集的 CPU 上，推荐使用 AES-256-GCM 。</p>
+<table>
+<thead>
+<tr>
+<th>区别</th>
+<th>AES-XXX-CFB</th>
+<th>AES-XXX-CTR</th>
+<th>AES-XXX-GCM</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>区别</td>
+<td>仅加密</td>
+<td>仅加密</td>
+<td>加密+消息完整性校验</td>
+</tr>
+<tr>
+<td>优点</td>
+<td>加密可并行</td>
+<td>加密解密均可并行计算</td>
+<td>加密解密均可并行计算</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>解密串行</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>AES-256-CFB：密码反馈模式（Cipher FeedBack Mode），仅加密无完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>AES-256-CTR：计算器模式（Counter Mode），仅加密无完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>AES-256-GCM：伽罗瓦 / 计数器模式（Galois / Counter Mode）支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<h2 id="ChaCha-加密"><a href="#ChaCha-加密" class="headerlink" title="ChaCha 加密"></a>ChaCha 加密</h2><p>新型的流加密算法，兼顾效率和安全，适合在没有 AES 指令集的 CPU 上，效率比 AES 高，推荐使用 XChaCha20-IETF-Poly1305 。</p>
+<blockquote>
+<p>ChaCha20：Salsa20 算法的改良，仅加密无完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>ChaCha20-IETF-Poly1305：支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<blockquote>
+<p>XChaCha20-IETF-Poly1305：是前者的升级版，拥有更大的随机数以防碰撞攻击，支持 AEAD 认证加密，同时完成加密和完整性校验。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在具备 AES 加速的 CPU（例如桌面、服务器）上，建议使用 AES-256-GCM 系列。</p>
+<p>在移动设备（例如手机、路由器等非 x86 架构的 CPU）上则建议使用 ChaCha20-IETF-Poly1305 系列。</p>
+<p>如果你是在内网（LAN 或 IPLC 线路）使用，则不必过多担心安全性问题，RC4-MD5 加密协议将是非常节省性能的选择。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>SQL笔记</title>
+    <url>/2019/04/25/6/</url>
+    <content><![CDATA[<p>数据库(Database)是按照数据结构来组织、存储和管理数据的仓库。企业发展到一定程度，数据存储会面临一些问题：如何处理大量数据的检索与访问，如何保证数据信息的一致性和完整性，如何分享数据并保证安全性。</p>
+<span id="more"></span>
+
+<h3 id="数据库概述"><a href="#数据库概述" class="headerlink" title="数据库概述"></a>数据库概述</h3><p><strong>数据库经历了三个发展阶段</strong></p>
+<ol>
+<li><p>人工管理阶段</p>
+<blockquote>
+<p>时间：20世纪50年代以前 事件：计算机主要用于科学计算。从硬件层面看，当时没有直接用于存储的设备，仅能借助卡片、磁带等外存达到数据存储的目的；从软件层面看，当时也没有完整的操作系统以及专门管理数据的软件；从数据层面看，当时数据量非常小且有没固定的数据结构，所有数据都直接由用户管理。<br>特点：数据不能长期保存，没有对数据进行管理的软件系统，数据不能共享，数据不具有独立性。 </p>
+</blockquote>
+</li>
+<li><p>文件系统阶段</p>
+<blockquote>
+<p>时间：50年代后期到60年代中期 事件：计算机不仅用于科学计算，还运用到信息管理方面。从硬件层面看，这时出现了磁盘等数据存储设备；从软件层面看，系统可以按照文件的名称对其进行检索和访问，并可以实现文件内容的增加、修改与删除；从数据层面看，实现了文本内数据的结构化，即单个文本中各数据之间具有一定的关系，但从整体来看每个文件中的数据却是无结构的。<br>特点：数据可以长期保存，由文件系统管理数据，数据具有一定的共享性和独立性。 </p>
+</blockquote>
+</li>
+<li><p>数据库管理系统阶段</p>
+<blockquote>
+<p>时间：60年代后期 事件：数据库系统克服了文件系统的缺陷，提供了对数据更高级、更有效的管理，这个阶段程序与数据的联系通过数据库管理系统（DBMS）来实现，因此计算机可以用来存储和处理规模庞大的数据集。<br>特点：数据实现结构化，共享性高、独立性强。</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>数据库基本概念</strong></p>
+<ol>
+<li><p>数据库文件</p>
+<blockquote>
+<p>按照一定规则，存放在硬盘上的数据文件集合。所以，MySQL 里的数据库都能在计算机硬盘内某个文件夹里找到对应的数据文件。</p>
+</blockquote>
+</li>
+<li><p>数据库实例</p>
+<blockquote>
+<p>指计算机内存中处于运行状态的数据库程序，以及为这些程序分配的一些内存空间。 实例是位于内存中，只在数据库处运行状态时才存在。简单点来讲，数据库实例就是把数据库加载到内存里面。</p>
+</blockquote>
+</li>
+<li><p>数据库应用</p>
+<blockquote>
+<p>建立在数据库上，对其功能进行扩充的程序。 qq 和手机银行app 都属于数据库应用程序，它们后台都需要调用数据库。 </p>
+</blockquote>
+</li>
+</ol>
+<p><strong>数据库分类</strong></p>
+<ol>
+<li><p>关系型数据库</p>
+<blockquote>
+<p>Oracle 运行稳定、可移植性高、功能齐全、性能超群，适用于大型企业。</p>
+<p>DB2 速度快、可靠性好、适用于海量数据、恢复性极强，适用于大中型企业。</p>
+<p>MySQL 开源、体积小、速度快，适用于中小型企业。</p>
+<p>SQL Server 全面高效、界面友好易操作，但是不跨平台，适用于中小型企业。</p>
+</blockquote>
+</li>
+<li><p>非关系型数据库</p>
+<blockquote>
+<p>NoSQL</p>
+<p>MongoDB</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>表结构</strong></p>
+<ol>
+<li><p>什么是表结构</p>
+<blockquote>
+<p>由固定列和任意行构成的二维表结构的数据集。 表中的列称为字段，表中的行称为记录。<br>以字段为基本的存储单位和计算单位。<br>每一个字段必须有字段名，且同一个表中的字段名不能重复。<br>每个字段的数据类型必须一致。</p>
+</blockquote>
+</li>
+<li><p>为什么要使用表结构数据</p>
+<blockquote>
+<p>除Excel、WPS之外的其他分析工具，都是使用表结构的存储格式</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>存储引擎</strong></p>
+<ol>
+<li><p>InnoDB：InnoDB：事务型数据库的首选引擎，也是MySQL的默认事务型引擎，支持事务安全表（ACID），支持行锁定和外键。</p>
+<blockquote>
+<p>使用场景：由于其支持事务处理、外键、支持崩溃修复能力和并发控制。 如果需要对事务的完整性要求比较高（比如银行），要求实现并发控制（比如售票），那选择InnoDB有很大的优势。<br>如果需要频繁的更新、删除操作的数据库，也可以选择InnoDB，因为支持事务的提交（commit）和回滚（rollback）。 </p>
+</blockquote>
+</li>
+<li><p>MyISAM：在Web、数据仓储和其他应用环境下最常使用的存储引擎之一，拥有较高的插入、查询速度，但不支持事物和外键</p>
+<blockquote>
+<p>使用场景：如果表主要是用于插入新记录和读出记录，那么选择MyISAM能实现处理高效率。</p>
+</blockquote>
+</li>
+<li><p>MEMORY：将表中的数据存储到内存中，未查询和引用其他表数据提供快速访问。</p>
+<blockquote>
+<p>使用场景：如果需要该数据库中一个用于查询的临时表。</p>
+</blockquote>
+</li>
+<li><p>ARCHIVE：仅仅支持最基本的插入和查询，它使用zlib压缩库，在记录被请求时会实时压缩，所以它经常被用来当做仓库使用。</p>
+<blockquote>
+<p>使用场景：由于高压缩和快速插入的特点Archive非常适合作为日志表的存储引擎，但是前提是不经常对该表进行查询操作。</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>ER图</strong></p>
+<p>在创建数据库表之前，首先需要设计数据库。 设计数据库表的主要工具是ER图，它以图形化的形式来表现数据库中有哪些对象，每一个对象有哪些属性，对象和对象之间有什么关系。</p>
+<ol>
+<li>实体：实体就是一个个对象</li>
+<li>属性：属性就是实体所具有的某个特征属性</li>
+<li>关系：关系就是实体和实体之间或者实体内部之间的联系</li>
+</ol>
+<p>在ER图中，矩形代表实体，椭圆代表属性，菱形代表关系，各个形状之间用线段连接。</p>
+<h3 id="SQL语法"><a href="#SQL语法" class="headerlink" title="SQL语法"></a>SQL语法</h3><p>SQL对大小写不敏感。<br>用#或– 单行注释，用/* */多行注释，注释语句不可执行。</p>
+<h4 id="数据定义语言DDL"><a href="#数据定义语言DDL" class="headerlink" title="数据定义语言DDL"></a>数据定义语言DDL</h4><p><strong>数据库增删改查</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> databases;</span><br><span class="line"><span class="keyword">create</span> database <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> database <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"><span class="keyword">alter</span> database <span class="string">&#x27;name&#x27;</span> charactor <span class="keyword">set</span> <span class="string">&#x27;format&#x27;</span>;</span><br><span class="line">use <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"><span class="keyword">drop</span> database <span class="string">&#x27;name&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据表增删改查</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> (</span><br><span class="line">    <span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type1&#x27;</span> <span class="string">&#x27;restrict1&#x27;</span></span><br><span class="line">    <span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type2&#x27;</span> <span class="string">&#x27;restrict2&#x27;</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"><span class="keyword">show</span> tables;</span><br><span class="line"><span class="keyword">desc</span> <span class="string">&#x27;name&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;oriname&#x27;</span> rename <span class="string">&#x27;newname&#x27;</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> change <span class="string">&#x27;orifield&#x27;</span> <span class="string">&#x27;newfield&#x27;</span> <span class="string">&#x27;type&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>];</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;newtype&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>];</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> <span class="keyword">add</span> <span class="string">&#x27;newfield&#x27;</span> <span class="string">&#x27;type&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>][<span class="string">&#x27;pos&#x27;</span>];</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;type&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>] <span class="keyword">first</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;typr&#x27;</span>[<span class="string">&#x27;restrict&#x27;</span>] after <span class="string">&#x27;field2&#x27;</span>;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> <span class="keyword">drop</span> <span class="string">&#x27;field&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>数据类型</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int</td>
+<td>4字节整数值</td>
+<td>text</td>
+<td>长文本字符串型</td>
+</tr>
+<tr>
+<td>float</td>
+<td>单精度浮点型，float(5,2)表示最多5位数，其中有两位小数</td>
+<td>date</td>
+<td>日期型，‘yyyy-MM-dd’</td>
+</tr>
+<tr>
+<td>char</td>
+<td>固定长度字符串型，如char(10)，‘abc ’</td>
+<td>time</td>
+<td>时间型，‘hh:mm:ss’</td>
+</tr>
+<tr>
+<td>varchar</td>
+<td>可变长度字符串型，如varchar(10)，‘abc’</td>
+<td>datetime</td>
+<td>日期时间型，‘yyyy-MM-dd hh:mm:ss’</td>
+</tr>
+</tbody></table>
+<p><strong>数据完整性</strong></p>
+<p>主体完整性：主键约束/唯一约束/唯一约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(field1<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27; primary key,&#x27;</span>field2<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;[,…]);</span></span><br><span class="line"><span class="string">create table &#x27;</span>name<span class="string">&#x27;(&#x27;</span>field1<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;,&#x27;</span>field2<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;[,…], primary key(&#x27;</span>field<span class="string">&#x27;));</span></span><br><span class="line"><span class="string">create table &#x27;</span>name<span class="string">&#x27;(&#x27;</span>field1<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;,&#x27;</span>field2<span class="string">&#x27; &#x27;</span>type<span class="string">&#x27;[,…], primary key(&#x27;</span>field1<span class="string">&#x27;, &#x27;</span>field2<span class="string">&#x27;[,…]));</span></span><br><span class="line"><span class="string">alter table &#x27;</span>name<span class="string">&#x27; drop primary key;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">create table &#x27;</span>name<span class="string">&#x27;(&#x27;</span>field1 <span class="string">&#x27;type,&#x27;</span>field2 <span class="string">&#x27;type&#x27;</span> <span class="keyword">unique</span>[,…]);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> <span class="keyword">drop</span> index <span class="string">&#x27;restrict&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(<span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type&#x27;</span> <span class="keyword">primary</span> key auto_increment,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type&#x27;</span>[,…]); </span><br><span class="line"><span class="keyword">Alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> auto_increment<span class="operator">=</span>n;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;type&#x27;</span>[ <span class="string">&#x27;restrict&#x27;</span>];</span><br></pre></td></tr></table></figure>
+
+<p>域完整性：非空约束/默认约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(<span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type&#x27;</span>,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type&#x27;</span> <span class="keyword">not</span> <span class="keyword">null</span>[,…]);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;type&#x27;</span>[ <span class="string">&#x27;restrict&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(<span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type1&#x27;</span>,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type2&#x27;</span> <span class="keyword">default</span> <span class="string">&#x27;value&#x27;</span>[ ,…]);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> modify <span class="string">&#x27;field&#x27;</span> <span class="string">&#x27;type&#x27;</span>[ <span class="string">&#x27;restrict&#x27;</span>] ;</span><br></pre></td></tr></table></figure>
+
+<p>参照完整性：外键约束</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">creat <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span>(<span class="string">&#x27;field1&#x27;</span> <span class="string">&#x27;type1&#x27;</span>,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;type2&#x27;</span>[,……,][<span class="keyword">constraint</span> 外键约束名] <span class="keyword">foreign</span> key(<span class="string">&#x27;field&#x27;</span>) <span class="keyword">references</span> <span class="string">&#x27;&#x27;</span>name(<span class="string">&#x27;field&#x27;</span>));</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;name&#x27;</span> <span class="keyword">drop</span> <span class="keyword">foreign</span> key <span class="string">&#x27;restrict&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>用户自定义完整性：检查约束</p>
+<p><strong>视图</strong></p>
+<p>视图是存储在数据库中的虚拟表，视图中不保存数据，内部封装了一条SELECT语句,数据来源于查询的一个或多个基本表。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> <span class="string">&#x27;viewname&#x27;</span> <span class="keyword">as</span> <span class="keyword">select</span> <span class="string">&#x27;query&#x27;</span>;</span><br><span class="line"><span class="keyword">desc</span> <span class="string">&#x27;viewname&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,...] <span class="keyword">from</span> <span class="string">&#x27;viewname&#x27;</span>[ <span class="keyword">where</span> <span class="string">&#x27;criteria&#x27;</span>];</span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace <span class="keyword">or</span> <span class="keyword">alter</span>] <span class="keyword">view</span> <span class="string">&#x27;viewname&#x27;</span> <span class="keyword">as</span> <span class="keyword">select</span> <span class="string">&#x27;query&#x27;</span>;</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> <span class="string">&#x27;viewname&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>索引</strong></p>
+<p>索引的意义</p>
+<blockquote>
+<p>用于快速找出在某个字段中有特定值的行。 如果不使用索引，MySQL必须从第一条记录开始检索表中的每一条记录，直到找出相关的行，那么表越大，查询数据所花费的时间就越多。<br>如果表中查询的字段有索引，MySQL能够快速到达一个位置去检索数据文件，而不必查看所有数据，那么将会节省很大一部分查询时间。</p>
+</blockquote>
+<p>索引的优缺点</p>
+<blockquote>
+<p>优点：</p>
+<p>​    通过索引对数据进行检索，大大提高了数据的查询效率</p>
+<p>缺点：</p>
+<p>​    创建索引和维护索引要耗费时间，并且随着数据量的增加所耗费的时间也会增加</p>
+<p>​    索引也需要占空间的，创建的索引太多，索引文件也会占用数据库的存储空间</p>
+<p>​    当对表中的数据进行增加、删除、修改时，索引也需要动态的维护，降低了数据的维护速度</p>
+</blockquote>
+<p>索引分类</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单值索引</td>
+<td>一个索引只包含一个字段</td>
+</tr>
+<tr>
+<td>唯一索引</td>
+<td>索引字段的取值不能重复，可以有空值，但空值也只能出现一次</td>
+</tr>
+<tr>
+<td>主键索引</td>
+<td>索引字段的取值不能为空，也不能重复</td>
+</tr>
+<tr>
+<td>主键索引</td>
+<td>一个索引包含多个字段</td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>仅限MyISAM引擎，只能在CHAR,VARCHAR,TEXT类型的字段上使用，通过关键字符，就能找到该字段所属的记录行</td>
+</tr>
+<tr>
+<td>空间索引</td>
+<td>仅限MyISAM引擎。对空间数据类型的字段建立的索引，且要求索引字段的取值不能为空</td>
+</tr>
+</tbody></table>
+<p>索引操作</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> index <span class="string">&#x27;index&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;tablename&#x27;</span>(<span class="string">&#x27;field&#x27;</span>);</span><br><span class="line"># 在表中定义了主键约束时，会自动创建一个对应的主键索引</span><br><span class="line"># 在表中定义了外键约束时，会自动创建一个对应的普通索引</span><br><span class="line"># 在表中定义了唯一约束时，会自动创建一个对应的唯一索引</span><br><span class="line"><span class="keyword">show</span> index <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>;</span><br><span class="line"><span class="keyword">drop</span> index <span class="string">&#x27;index&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;tablename&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>需要创建索引的情况</p>
+<blockquote>
+<p>主键和外键字段自动创建索引</p>
+<p>频繁作为查询条件的字段应该创建索引</p>
+<p>查询中排序的字段应该创建索引</p>
+<p>查询中分组或统计的字段应该创建索引</p>
+</blockquote>
+<p>不需要创建索引的情况</p>
+<blockquote>
+<p>表中记录太少不需要创建索引</p>
+<p>需要频繁增删改的字段不适合创建索引</p>
+<p>where子句中用不到的字段不需要创建索引</p>
+<p>重复值较多的字段不需要创建索引</p>
+</blockquote>
+<h4 id="数据操作语言DML"><a href="#数据操作语言DML" class="headerlink" title="数据操作语言DML"></a>数据操作语言DML</h4><p><strong>添加数据</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">&#x27;tablename&#x27;</span>(<span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;value1&#x27;</span>,…]) <span class="keyword">values</span>(<span class="string">&#x27;value1&#x27;</span>[,<span class="string">&#x27;value1&#x27;</span>,…]), (<span class="string">&#x27;value1&#x27;</span>[,<span class="string">&#x27;value2&#x27;</span>,…])[,…]);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">values</span>(<span class="string">&#x27;value1&#x27;</span>[,<span class="string">&#x27;value1&#x27;</span>,…]), (<span class="string">&#x27;value1&#x27;</span>[,<span class="string">&#x27;value1&#x27;</span>,…])[,…]); </span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> sqlsafeupdates<span class="operator">=</span><span class="number">0</span>;</span><br><span class="line">load data infile ‘$dir$.csv’<span class="keyword">into</span> <span class="keyword">table</span> <span class="string">&#x27;tablename&#x27;</span> fields terminated <span class="keyword">by</span> ‘,<span class="string">&#x27; ignore 1 lines; </span></span><br></pre></td></tr></table></figure>
+
+<p><strong>更新数据</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">update <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">set</span> <span class="string">&#x27;field1&#x27;</span><span class="operator">=</span><span class="string">&#x27;value1&#x27;</span>[, <span class="string">&#x27;value1&#x27;</span><span class="operator">=</span><span class="string">&#x27;value1&#x27;</span>,…][ <span class="keyword">where</span> <span class="string">&#x27;crifield&#x27;</span><span class="operator">=</span><span class="string">&#x27;crivalue&#x27;</span>];</span><br></pre></td></tr></table></figure>
+
+<p><strong>删除数据</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>[ <span class="keyword">where</span> <span class="string">&#x27;crifield&#x27;</span><span class="operator">=</span><span class="string">&#x27;crivalue&#x27;</span>]; </span><br><span class="line"><span class="keyword">truncate</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"># <span class="keyword">delete</span>和<span class="keyword">truncate</span>区别</span><br><span class="line"># <span class="keyword">delete</span>可以添加删除条件删除表中部分数据，<span class="keyword">truncate</span>只能删除表中全部数据。</span><br><span class="line"># <span class="keyword">delete</span>删除表中数据保留表结构，<span class="keyword">truncate</span>直接把表删除(<span class="keyword">drop</span>)然后再创建一张新表，执行速度比<span class="keyword">delete</span>快。</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据查询语言DQL"><a href="#数据查询语言DQL" class="headerlink" title="数据查询语言DQL"></a>数据查询语言DQL</h4><p>select语句执行后服务器会按照要求检索表中数据，并将检索结果发送到客户端，这个以表的形式展示出来的临时结果集就是虚拟表，它是存放在内存中，不是在磁盘中的，执行其他操作之后这个结果集就没有了，所以它是临时存在的虚拟表，而不是一个真实的表。</p>
+<p><strong>单表查询</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field2&#x27;</span> <span class="keyword">as</span> <span class="string">&#x27;alias&#x27;</span> <span class="keyword">from</span> <span class="string">&#x27;oritablename&#x27;</span> [<span class="keyword">as</span>] <span class="string">&#x27;alias&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="string">&#x27;field2&#x27;</span> <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">where</span> <span class="string">&#x27;criteria&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">where</span> <span class="string">&#x27;field2&#x27;</span> <span class="keyword">is</span> [<span class="keyword">not</span>] <span class="keyword">null</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">where</span> <span class="string">&#x27;field2&#x27;</span> <span class="keyword">like</span> <span class="string">&#x27;wildcard&#x27;</span>; </span><br><span class="line"># 百分号（<span class="operator">%</span>）通配符：匹配多个字符，可以匹配除了<span class="keyword">null</span>以外的任何值</span><br><span class="line"># 下划线（_）通配符：匹配一个字符</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>[ <span class="keyword">where</span> <span class="string">&#x27;criteria&#x27;</span>] <span class="keyword">group</span> <span class="keyword">by</span> <span class="string">&#x27;groupfield1&#x27;</span>[,<span class="string">&#x27;groupfield2&#x27;</span>,…]; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>[ <span class="keyword">where</span> <span class="string">&#x27;criteria&#x27;</span>][ <span class="keyword">group</span> <span class="keyword">by</span> <span class="string">&#x27;groupfield1&#x27;</span>[,<span class="string">&#x27;groupfield2&#x27;</span>,…]] <span class="keyword">having</span> <span class="string">&#x27;criteria&#x27;</span>; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="string">&#x27;field1&#x27;</span>[ <span class="string">&#x27;direction&#x27;</span>,<span class="string">&#x27;field2&#x27;</span> <span class="string">&#x27;direction&#x27;</span>,…];</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> limit [<span class="string">&#x27;offsetvalue&#x27;</span>,] <span class="string">&#x27;number&#x27;</span> <span class="operator">|</span> <span class="string">&#x27;number&#x27;</span> <span class="keyword">offset</span> <span class="string">&#x27;offsetvalue&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>多表查询</strong></p>
+<p>表之间关系：一对多，多对多，一对一。</p>
+<p>消除笛卡尔积</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,…] <span class="keyword">from</span> <span class="string">&#x27;table1&#x27;</span>,<span class="string">&#x27;table2&#x27;</span>[,…] <span class="keyword">where</span> <span class="string">&#x27;table1&#x27;</span>.key<span class="operator">=</span><span class="string">&#x27;table2&#x27;</span>.key; </span><br></pre></td></tr></table></figure>
+
+<p>连接查询</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,…] <span class="keyword">from</span> <span class="string">&#x27;table1&#x27;</span> [<span class="keyword">inner</span>] <span class="keyword">join</span> <span class="string">&#x27;table2&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;table1&#x27;</span>.key<span class="operator">=</span><span class="string">&#x27;table2&#x27;</span>.key;</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,…] <span class="keyword">from</span> <span class="string">&#x27;table1&#x27;</span> <span class="keyword">left</span> <span class="keyword">join</span> <span class="string">&#x27;table2&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;table1&#x27;</span>.key<span class="operator">=</span><span class="string">&#x27;table2&#x27;</span>.key; </span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,…] <span class="keyword">from</span> <span class="string">&#x27;table1&#x27;</span> <span class="keyword">right</span> <span class="keyword">join</span> <span class="string">&#x27;table2&#x27;</span> <span class="keyword">on</span> <span class="string">&#x27;table1&#x27;</span>.key<span class="operator">=</span><span class="string">&#x27;table2&#x27;</span>.key; </span><br></pre></td></tr></table></figure>
+
+<p>联合查询</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 去重</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br><span class="line"># 不去重</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span> <span class="keyword">union</span> <span class="keyword">all</span> <span class="keyword">select</span> <span class="string">&#x27;field1&#x27;</span>[,<span class="string">&#x27;field2&#x27;</span>,…] <span class="keyword">from</span> <span class="string">&#x27;tablename&#x27;</span>; </span><br></pre></td></tr></table></figure>
+
+<p>子查询</p>
+<blockquote>
+<p>标量子查询：返回的结果是一个数据(单行单列)</p>
+<p>行子查询：返回的结果是一行(单行多列)</p>
+<p>列子查询：返回的结果是一列(多行单列)</p>
+<p>表子查询：返回的结果是一张临时表(多行多列)</p>
+<p>常用操作符：IN, ANY, ALL, EXIST</p>
+</blockquote>
+<p><strong>函数</strong></p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>函数</th>
+<th>类型</th>
+<th>函数</th>
+<th>类型</th>
+<th>函数</th>
+<th>类型</th>
+<th>函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>聚合</td>
+<td>avg</td>
+<td>数学</td>
+<td>sign</td>
+<td>日期</td>
+<td>date_format</td>
+<td>日期</td>
+<td>time</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>count</td>
+<td>数学</td>
+<td>sqrt</td>
+<td>日期</td>
+<td>from_unixtime</td>
+<td>开窗</td>
+<td>cume_dist</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>max</td>
+<td>字符串</td>
+<td>ascii</td>
+<td>日期</td>
+<td>monthname</td>
+<td>开窗</td>
+<td>dense_rank</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>min</td>
+<td>字符串</td>
+<td>bit_length</td>
+<td>日期</td>
+<td>dayname</td>
+<td>开窗</td>
+<td>first_value</td>
+</tr>
+<tr>
+<td>聚合</td>
+<td>sum</td>
+<td>字符串</td>
+<td>concat</td>
+<td>日期</td>
+<td>now</td>
+<td>开窗</td>
+<td>lag</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>abs</td>
+<td>字符串</td>
+<td>concat_ws</td>
+<td>日期</td>
+<td>curdate</td>
+<td>开窗</td>
+<td>last_value</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>bin</td>
+<td>字符串</td>
+<td>insert</td>
+<td>日期</td>
+<td>curtime</td>
+<td>开窗</td>
+<td>lead</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>exp</td>
+<td>字符串</td>
+<td>lcase</td>
+<td>日期</td>
+<td>quarter</td>
+<td>开窗</td>
+<td>nth_value</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>greatest</td>
+<td>字符串</td>
+<td>ucase</td>
+<td>日期</td>
+<td>week</td>
+<td>开窗</td>
+<td>ntile</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>least</td>
+<td>字符串</td>
+<td>left</td>
+<td>日期</td>
+<td>dayofyear</td>
+<td>开窗</td>
+<td>percent_rank</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>ln</td>
+<td>字符串</td>
+<td>right</td>
+<td>日期</td>
+<td>dayofmonth</td>
+<td>开窗</td>
+<td>rank</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>log</td>
+<td>字符串</td>
+<td>length</td>
+<td>日期</td>
+<td>dayofweek</td>
+<td>开窗</td>
+<td>row_number</td>
+</tr>
+<tr>
+<td>数学</td>
+<td>mod</td>
+<td>字符串</td>
+<td>position</td>
+<td>日期</td>
+<td>year</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>pi</td>
+<td>字符串</td>
+<td>quote</td>
+<td>日期</td>
+<td>month</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>rand</td>
+<td>字符串</td>
+<td>repeat</td>
+<td>日期</td>
+<td>day</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>floor</td>
+<td>字符串</td>
+<td>reverse</td>
+<td>日期</td>
+<td>hour</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>ceiling</td>
+<td>字符串</td>
+<td>ltrim</td>
+<td>日期</td>
+<td>minute</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>round</td>
+<td>字符串</td>
+<td>rtrim</td>
+<td>日期</td>
+<td>second</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数学</td>
+<td>truncate</td>
+<td>字符串</td>
+<td>trim</td>
+<td>日期</td>
+<td>date</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>查询结果保存</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">&#x27;newtablename&#x27;</span> <span class="keyword">as</span> <span class="keyword">select</span> <span class="string">&#x27;query&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="string">&#x27;query&#x27;</span> <span class="keyword">into</span> outfile <span class="string">&#x27;savedir&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果报错提示：“The MySQL server is running with the –secure-file-priv option so it cannot execute this statement”，表示数据库不允许存到此路径。<br>运行：show variables like ‘secure<em>file</em>priv’; 查看允许路径，再存到此路径下即可。</p>
+</blockquote>
+<h4 id="数据控制语言DCL"><a href="#数据控制语言DCL" class="headerlink" title="数据控制语言DCL"></a>数据控制语言DCL</h4><p>定义数据库访问权限和安全级别，常用指令：Grant，Revoke。</p>
+]]></content>
+      <categories>
+        <category>笔记</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+      </tags>
+  </entry>
+</search>
